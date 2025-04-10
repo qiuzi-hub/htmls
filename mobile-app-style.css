@@ -1,0 +1,213 @@
+/* 移动端APP样式 */
+:root {
+    --app-primary-color: #374151;
+    --app-secondary-color: #4B5563;
+    --app-highlight-color: #4B5563;
+    --app-bg-color: #F3F4F6;
+    --app-text-primary: #1F2937;
+    --app-text-secondary: #6B7280;
+    --app-border-color: #E5E7EB;
+    --app-status-bar-height: 24px;
+    --app-header-height: 56px;
+    --app-bottom-nav-height: 56px;
+    --app-content-padding: 16px;
+    --app-border-radius: 12px;
+    --app-card-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* 基础样式 */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--app-bg-color);
+    color: var(--app-text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    max-width: 100%;
+    overflow-x: hidden;
+    position: relative;
+    /* 固定APP尺寸 */
+    margin: 0 auto;
+    width: 100%;
+    max-width: 430px; /* 标准手机宽度 */
+    min-height: 100vh;
+}
+
+/* 修复iOS Safari中的tap高亮问题 */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* APP状态栏 */
+.app-status-bar {
+    background-color: var(--app-primary-color);
+    color: white;
+    height: var(--app-status-bar-height);
+    padding: 0 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+}
+
+/* APP头部 */
+.app-header {
+    background-color: white;
+    height: var(--app-header-height);
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.app-header-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-left: 16px;
+}
+
+.app-back-button {
+    padding: 8px;
+    margin-left: -8px;
+}
+
+/* 内容区域 */
+.app-content {
+    padding: var(--app-content-padding);
+    padding-bottom: calc(var(--app-bottom-nav-height) + var(--app-content-padding));
+}
+
+/* 底部导航 */
+.app-bottom-nav {
+    background-color: white;
+    height: var(--app-bottom-nav-height);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 430px; /* 与body同宽 */
+    margin: 0 auto;
+    box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.1);
+    z-index: 20;
+}
+
+.app-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 0;
+    flex: 1;
+}
+
+.app-nav-item.active {
+    color: var(--app-highlight-color);
+}
+
+.app-nav-item i {
+    font-size: 20px;
+    margin-bottom: 4px;
+}
+
+.app-nav-item span {
+    font-size: 11px;
+}
+
+/* 卡片样式 */
+.app-card {
+    background-color: white;
+    border-radius: var(--app-border-radius);
+    box-shadow: var(--app-card-shadow);
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.app-card-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+/* 按钮样式 */
+.app-button {
+    background-color: var(--app-primary-color);
+    color: white;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-weight: 500;
+    text-align: center;
+    display: block;
+    width: 100%;
+    margin-top: 16px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.app-button-secondary {
+    background-color: #E5E7EB;
+    color: var(--app-text-primary);
+}
+
+/* 表单元素 */
+.app-form-group {
+    margin-bottom: 16px;
+}
+
+.app-form-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: var(--app-text-secondary);
+}
+
+.app-form-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--app-border-color);
+    border-radius: 8px;
+    background-color: white;
+    font-size: 16px;
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* 适应不同设备高度 */
+@media screen and (min-height: 800px) {
+    :root {
+        --app-content-padding: 20px;
+    }
+    
+    .app-button {
+        padding: 14px 20px;
+    }
+}
+
+/* 小型设备优化 */
+@media screen and (max-width: 320px) {
+    :root {
+        --app-content-padding: 12px;
+    }
+    
+    .app-card {
+        padding: 12px;
+    }
+    
+    .app-form-input {
+        padding: 10px;
+    }
+} 

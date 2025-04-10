@@ -6,7 +6,7 @@
     <title>完工记录 - 堆场验箱系统</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="css/mobile-app-style.css">
+    <link rel="stylesheet" href="../css/mobile-app-style.css">
     <style>
         body {
             max-width: 430px;
@@ -18,125 +18,28 @@
             overflow-y: auto;
         }
         
+        .aspect-square {
+            position: relative;
+            padding-bottom: 100%;
+        }
+        
+        .aspect-square img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
         .app-bottom-nav {
             max-width: 430px;
             margin: 0 auto;
         }
-        
-        .record-section {
-            background-color: white;
-            border-radius: var(--app-border-radius);
-            padding: 16px;
-            margin-bottom: 12px;
-            box-shadow: var(--app-card-shadow);
-        }
-        
-        .record-field {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid var(--app-border-color);
-        }
-        
-        .record-field:last-child {
-            border-bottom: none;
-        }
-        
-        .field-label {
-            display: flex;
-            align-items: center;
-            color: var(--app-text-secondary);
-            font-size: 14px;
-        }
-        
-        .field-label i {
-            width: 20px;
-            margin-right: 8px;
-            text-align: center;
-        }
-        
-        .field-value {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--app-text-primary);
-        }
-        
-        .repair-item {
-            background-color: #f9fafb;
-            border-radius: 8px;
-            padding: 8px 12px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .status-badge {
-            padding: 2px 8px;
-            border-radius: 999px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-        
-        .status-completed {
-            background-color: #dcfce7;
-            color: #166534;
-        }
-        
-        .action-buttons {
-            display: flex;
-            gap: 12px;
-            margin-top: 24px;
-        }
-        
-        .action-button {
-            flex: 1;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: 500;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .primary-button {
-            background-color: var(--app-primary-color);
-            color: white;
-        }
-        
-        .secondary-button {
-            background-color: #f3f4f6;
-            color: var(--app-text-primary);
-        }
-        
-        .photo-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-        }
-        
-        .photo-item {
-            aspect-ratio: 1/1;
-            border-radius: 8px;
-            overflow: hidden;
-            background-color: #f3f4f6;
-        }
-        
-        .photo-caption {
-            margin-top: 4px;
-            font-size: 12px;
-            color: var(--app-text-secondary);
-            text-align: center;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
     </style>
 </head>
 <body class="bg-gray-100 h-screen flex flex-col">
-    <!-- 状态栏 -->
+    <!-- 顶部状态栏 -->
     <div class="app-status-bar">
         <div>9:41</div>
         <div class="flex items-center space-x-2">
@@ -148,24 +51,24 @@
     
     <!-- 头部 -->
     <div class="app-header">
-        <a href="repair_completion.html" class="app-back-button">
+        <a href="../repair_completion.html" class="app-back-button">
             <i class="fas fa-arrow-left text-gray-600"></i>
         </a>
         <h1 class="app-header-title">完工记录</h1>
     </div>
     
     <!-- 主内容区域 -->
-    <div class="app-content pb-20">
+    <div class="app-content">
         <!-- 集装箱信息卡片 -->
-        <div class="record-section">
+        <div class="app-card">
             <div class="flex items-center justify-between mb-3">
-                <h2 class="text-base font-medium text-gray-800">集装箱信息</h2>
-                <span class="status-badge status-completed">已修好</span>
+                <h2 class="font-semibold text-gray-800">集装箱信息</h2>
+                <span class="px-2 py-1 bg-green-100 text-green-600 text-xs rounded-full">已修好</span>
             </div>
             
-            <div class="mb-3">
+            <div class="mb-2">
                 <span class="text-xl font-medium text-blue-600">MSCU-123456-7</span>
-                <span class="ml-2 text-xs text-gray-500">箱号数字: 1234567</span>
+                <span class="ml-2 text-sm text-gray-500">箱号数字: 1234567</span>
             </div>
             
             <div class="grid grid-cols-2 gap-3 text-sm">
@@ -189,8 +92,8 @@
         </div>
         
         <!-- 维修状态卡片 -->
-        <div class="record-section">
-            <h2 class="text-base font-medium text-gray-800 mb-3">维修状态概览</h2>
+        <div class="app-card">
+            <h2 class="font-semibold text-gray-800 mb-3">维修状态概览</h2>
             
             <div class="mb-3 pb-3 border-b border-gray-100">
                 <div class="flex justify-between items-center mb-1">
@@ -204,122 +107,128 @@
             </div>
             
             <div class="space-y-2">
-                <div class="repair-item">
+                <div class="flex items-center justify-between bg-gray-50 p-2 rounded-lg">
                     <span class="text-sm text-gray-700">右侧板更换</span>
-                    <span class="status-badge status-completed">已完成</span>
+                    <span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">已完成</span>
                 </div>
-                <div class="repair-item">
+                <div class="flex items-center justify-between bg-gray-50 p-2 rounded-lg">
                     <span class="text-sm text-gray-700">顶板密封处理</span>
-                    <span class="status-badge status-completed">已完成</span>
+                    <span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">已完成</span>
                 </div>
-                <div class="repair-item">
+                <div class="flex items-center justify-between bg-gray-50 p-2 rounded-lg">
                     <span class="text-sm text-gray-700">门铰链紧固</span>
-                    <span class="status-badge status-completed">已完成</span>
+                    <span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">已完成</span>
                 </div>
-                <div class="repair-item">
+                <div class="flex items-center justify-between bg-gray-50 p-2 rounded-lg">
                     <span class="text-sm text-gray-700">地板修复</span>
-                    <span class="status-badge status-completed">已完成</span>
+                    <span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">已完成</span>
                 </div>
             </div>
         </div>
         
         <!-- 完工详细记录 -->
-        <div class="record-section">
+        <div class="app-card">
             <div class="flex justify-between items-center mb-3">
-                <h2 class="text-base font-medium text-gray-800">完工详细记录</h2>
-                <button id="edit-records-btn" class="bg-blue-500 text-white px-3 py-1.5 rounded-lg text-xs flex items-center">
+                <h2 class="font-semibold text-gray-800">完工详细记录</h2>
+                <button id="edit-records-btn" class="bg-blue-500 text-white px-3 py-1.5 rounded-lg text-sm flex items-center">
                     <i class="fas fa-edit mr-1"></i> 编辑记录
                 </button>
             </div>
             
             <div id="view-mode" class="space-y-3">
-                <div class="record-field">
-                    <div class="field-label">
-                        <i class="fas fa-calendar-check"></i>
-                        <span>完工日期</span>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fas fa-calendar-check text-gray-400 w-5"></i>
+                        <span class="text-sm text-gray-700 ml-2">完工日期</span>
                     </div>
-                    <span class="field-value">2023-06-15</span>
+                    <span class="text-sm font-medium text-gray-800">2023-06-15</span>
                 </div>
                 
-                <div class="record-field">
-                    <div class="field-label">
-                        <i class="fas fa-clock"></i>
-                        <span>完工时间</span>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fas fa-clock text-gray-400 w-5"></i>
+                        <span class="text-sm text-gray-700 ml-2">完工时间</span>
                     </div>
-                    <span class="field-value">14:45</span>
+                    <span class="text-sm font-medium text-gray-800">14:45</span>
                 </div>
                 
-                <div class="record-field">
-                    <div class="field-label">
-                        <i class="fas fa-user-check"></i>
-                        <span>维修人员</span>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fas fa-user-check text-gray-400 w-5"></i>
+                        <span class="text-sm text-gray-700 ml-2">维修人员</span>
                     </div>
-                    <span class="field-value">张工程师, 李技师</span>
+                    <span class="text-sm font-medium text-gray-800">张工程师, 李技师</span>
                 </div>
                 
-                <div class="record-field">
-                    <div class="field-label">
-                        <i class="fas fa-users"></i>
-                        <span>施工人数</span>
+           
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fas fa-users text-gray-400 w-5"></i>
+                        <span class="text-sm text-gray-700 ml-2">施工人数</span>
                     </div>
-                    <span class="field-value">2 人</span>
+                    <span class="text-sm font-medium text-gray-800">2 人</span>
                 </div>
                 
-                <div class="record-field">
-                    <div class="field-label">
-                        <i class="fas fa-check-circle"></i>
-                        <span>质检结果</span>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-gray-400 w-5"></i>
+                        <span class="text-sm text-gray-700 ml-2">质检结果</span>
                     </div>
-                    <span class="field-value text-green-600">合格</span>
+                    <span class="text-sm font-medium text-green-600">合格</span>
                 </div>
                 
-                <div class="record-field">
-                    <div class="field-label">
-                        <i class="fas fa-file-invoice"></i>
-                        <span>维修单号</span>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fas fa-file-invoice text-gray-400 w-5"></i>
+                        <span class="text-sm text-gray-700 ml-2">维修单号</span>
                     </div>
-                    <span class="field-value">WX20230615001</span>
+                    <span class="text-sm font-medium text-gray-800">WX20230615001</span>
                 </div>
                 
-                <div class="record-field">
-                    <div class="field-label">
-                        <i class="fas fa-signature"></i>
-                        <span>质检人员</span>
+              
+                
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fas fa-signature text-gray-400 w-5"></i>
+                        <span class="text-sm text-gray-700 ml-2">质检人员</span>
                     </div>
-                    <span class="field-value">王质检</span>
+                    <span class="text-sm font-medium text-gray-800">王质检</span>
                 </div>
+              
             </div>
 
             <!-- 编辑模式 -->
             <div id="edit-mode" class="space-y-3 hidden">
-                <div class="record-field">
-                    <div class="field-label">
-                        <i class="fas fa-calendar-check"></i>
-                        <span>完工日期</span>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fas fa-calendar-check text-gray-400 w-5"></i>
+                        <span class="text-sm text-gray-700 ml-2">完工日期</span>
                     </div>
                     <input type="date" class="p-1.5 border border-gray-200 rounded text-sm w-36" value="2023-06-15">
                 </div>
                 
-                <div class="record-field">
-                    <div class="field-label">
-                        <i class="fas fa-clock"></i>
-                        <span>完工时间</span>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fas fa-clock text-gray-400 w-5"></i>
+                        <span class="text-sm text-gray-700 ml-2">完工时间</span>
                     </div>
                     <input type="time" class="p-1.5 border border-gray-200 rounded text-sm w-36" value="14:45">
                 </div>
                 
-                <div class="record-field">
-                    <div class="field-label">
-                        <i class="fas fa-user-check"></i>
-                        <span>维修人员</span>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fas fa-user-check text-gray-400 w-5"></i>
+                        <span class="text-sm text-gray-700 ml-2">维修人员</span>
                     </div>
                     <input type="text" class="p-1.5 border border-gray-200 rounded text-sm w-36" value="张工程师, 李技师">
                 </div>
                 
-                <div class="record-field">
-                    <div class="field-label">
-                        <i class="fas fa-users"></i>
-                        <span>施工人数</span>
+             
+                
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fas fa-users text-gray-400 w-5"></i>
+                        <span class="text-sm text-gray-700 ml-2">施工人数</span>
                     </div>
                     <div class="flex items-center w-36">
                         <input type="number" class="p-1.5 border border-gray-200 rounded text-sm w-20 text-right" value="2" min="1" max="20">
@@ -327,10 +236,10 @@
                     </div>
                 </div>
                 
-                <div class="record-field">
-                    <div class="field-label">
-                        <i class="fas fa-check-circle"></i>
-                        <span>质检结果</span>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-gray-400 w-5"></i>
+                        <span class="text-sm text-gray-700 ml-2">质检结果</span>
                     </div>
                     <select class="p-1.5 border border-gray-200 rounded text-sm w-36">
                         <option value="pass" selected>合格</option>
@@ -339,70 +248,69 @@
                     </select>
                 </div>
                 
-                <div class="record-field">
-                    <div class="field-label">
-                        <i class="fas fa-file-invoice"></i>
-                        <span>维修单号</span>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fas fa-file-invoice text-gray-400 w-5"></i>
+                        <span class="text-sm text-gray-700 ml-2">维修单号</span>
                     </div>
                     <input type="text" class="p-1.5 border border-gray-200 rounded text-sm w-36 bg-gray-50" value="WX20230615001" readonly>
                 </div>
                 
-                <div class="record-field">
-                    <div class="field-label">
-                        <i class="fas fa-signature"></i>
-                        <span>质检人员</span>
+            
+                
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fas fa-signature text-gray-400 w-5"></i>
+                        <span class="text-sm text-gray-700 ml-2">质检人员</span>
                     </div>
                     <input type="text" class="p-1.5 border border-gray-200 rounded text-sm w-36" value="王质检">
                 </div>
 
                 <div class="flex justify-end mt-4 space-x-2">
-                    <button id="cancel-edit-btn" class="bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg text-sm">取消</button>
-                    <button id="save-edit-btn" class="bg-blue-500 text-white px-3 py-1.5 rounded-lg text-sm">保存</button>
+                    <button id="cancel-edit-btn" class="app-button-secondary px-3 py-1.5 rounded-lg text-sm">取消</button>
+                    <button id="save-edit-btn" class="app-button px-3 py-1.5 rounded-lg text-sm">保存</button>
                 </div>
             </div>
         </div>
         
         <!-- 维修备注 -->
-        <div class="record-section">
-            <h2 class="text-base font-medium text-gray-800 mb-2">维修备注</h2>
+        <div class="app-card">
+            <h2 class="font-semibold text-gray-800 mb-2">维修备注</h2>
             <div class="text-sm text-gray-700 border-l-2 border-gray-300 pl-3 py-2">
                 右侧板已完全更换，使用了加厚型钢板以增强耐用性。顶板漏水点共发现3处，均已密封处理。门铰链已紧固并更换了部分磨损的螺丝。地板损坏部分已完全修复。
             </div>
         </div>
         
         <!-- 维修照片 -->
-        <div class="record-section">
-            <h2 class="text-base font-medium text-gray-800 mb-3">维修照片</h2>
+        <div class="app-card">
+            <h2 class="font-semibold text-gray-800 mb-3">维修照片</h2>
             
-            <div class="photo-grid">
-                <div class="photo-item">
+            <div class="grid grid-cols-3 gap-2">
+                <div class="aspect-square bg-gray-100 rounded-lg overflow-hidden">
                     <img src="https://placehold.co/200x200/e5e7eb/a1a1aa?text=右侧板" alt="右侧板" class="w-full h-full object-cover">
+                    <div class="mt-1 text-xs text-gray-500 text-center truncate">右侧板更换后</div>
                 </div>
-                <div class="photo-item">
+                <div class="aspect-square bg-gray-100 rounded-lg overflow-hidden">
                     <img src="https://placehold.co/200x200/e5e7eb/a1a1aa?text=顶板" alt="顶板" class="w-full h-full object-cover">
+                    <div class="mt-1 text-xs text-gray-500 text-center truncate">顶板密封后</div>
                 </div>
-                <div class="photo-item">
+                <div class="aspect-square bg-gray-100 rounded-lg overflow-hidden">
                     <img src="https://placehold.co/200x200/e5e7eb/a1a1aa?text=门铰链" alt="门铰链" class="w-full h-full object-cover">
+                    <div class="mt-1 text-xs text-gray-500 text-center truncate">门铰链紧固后</div>
                 </div>
-                <div class="photo-item">
+                <div class="aspect-square bg-gray-100 rounded-lg overflow-hidden">
                     <img src="https://placehold.co/200x200/e5e7eb/a1a1aa?text=地板" alt="地板" class="w-full h-full object-cover">
+                    <div class="mt-1 text-xs text-gray-500 text-center truncate">地板修复后</div>
                 </div>
-            </div>
-            
-            <div class="grid grid-cols-4 gap-2 mt-1">
-                <div class="text-xs text-gray-500 text-center truncate">右侧板更换后</div>
-                <div class="text-xs text-gray-500 text-center truncate">顶板密封后</div>
-                <div class="text-xs text-gray-500 text-center truncate">门铰链紧固后</div>
-                <div class="text-xs text-gray-500 text-center truncate">地板修复后</div>
             </div>
         </div>
         
         <!-- 导出打印按钮 -->
-        <div class="action-buttons">
-            <button class="action-button secondary-button">
+        <div class="flex space-x-3 mb-8">
+            <button class="app-button-secondary flex-1 py-3 rounded-xl font-medium flex items-center justify-center">
                 <i class="fas fa-download mr-2"></i>导出PDF
             </button>
-            <button class="action-button primary-button">
+            <button class="app-button flex-1 py-3 rounded-xl font-medium shadow-md flex items-center justify-center">
                 <i class="fas fa-print mr-2"></i>打印记录
             </button>
         </div>
@@ -410,11 +318,11 @@
     
     <!-- 底部导航 -->
     <div class="app-bottom-nav">
-        <a href="home.html" class="app-nav-item">
+        <a href="../home.html" class="app-nav-item">
             <i class="fas fa-home"></i>
             <span>首页</span>
         </a>
-        <a href="task_list.html" class="app-nav-item active">
+        <a href="../task_list.html" class="app-nav-item active">
             <i class="fas fa-list-alt"></i>
             <span>任务</span>
         </a>
@@ -422,147 +330,180 @@
             <i class="fas fa-chart-bar"></i>
             <span>统计</span>
         </a>
-        <a href="settings.html" class="app-nav-item">
+        <a href="../settings.html" class="app-nav-item">
             <i class="fas fa-user"></i>
             <span>我的</span>
         </a>
     </div>
     
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
-        // DOM元素引用
+        // 显示提示消息
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-lg text-sm z-50';
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+                toast.style.transition = 'opacity 0.5s';
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 500);
+            }, 2000);
+        }
+        
+        // 给导出和打印按钮添加事件
+        document.addEventListener('DOMContentLoaded', function() {
+            const exportBtn = document.querySelector('.bg-gray-200.text-gray-700.py-3');
+            const printBtn = document.querySelector('.bg-gray-600.text-white.py-3');
+            const materialDetailBtn = document.querySelector('button[type="button"].p-1\\.5.text-blue-500');
+            const editRecordsBtn = document.getElementById('edit-records-btn');
+            const cancelEditBtn = document.getElementById('cancel-edit-btn');
+            const saveEditBtn = document.getElementById('save-edit-btn');
             const viewMode = document.getElementById('view-mode');
             const editMode = document.getElementById('edit-mode');
-        const editBtn = document.getElementById('edit-records-btn');
-        const cancelBtn = document.getElementById('cancel-edit-btn');
-        const saveBtn = document.getElementById('save-edit-btn');
             
-        // 编辑模式切换
-        editBtn.addEventListener('click', function() {
+            // 编辑按钮事件
+            if (editRecordsBtn) {
+                editRecordsBtn.addEventListener('click', function() {
                     viewMode.classList.add('hidden');
                     editMode.classList.remove('hidden');
+                    editRecordsBtn.classList.add('hidden');
                 });
+            }
             
-        cancelBtn.addEventListener('click', function() {
+            // 取消编辑按钮事件
+            if (cancelEditBtn) {
+                cancelEditBtn.addEventListener('click', function() {
                     viewMode.classList.remove('hidden');
                     editMode.classList.add('hidden');
-        });
-        
-        saveBtn.addEventListener('click', function() {
-            // 获取所有输入值
-            const formElements = editMode.querySelectorAll('input, select');
-            const formData = {};
+                    editRecordsBtn.classList.remove('hidden');
+                });
+            }
             
-            formElements.forEach(element => {
-                const fieldLabel = element.closest('.record-field').querySelector('.field-label span').textContent;
-                formData[fieldLabel] = element.value;
-            });
-            
-            // 在真实应用中这里会保存到后端或本地存储
-            console.log('保存完工记录:', formData);
-            
-            // 更新视图模式中的显示值
-            Object.keys(formData).forEach(key => {
-                const valueElement = Array.from(viewMode.querySelectorAll('.field-label span'))
-                    .find(el => el.textContent === key)
-                    ?.closest('.record-field')
-                    ?.querySelector('.field-value');
-                
-                if (valueElement) {
-                    if (key === '质检结果') {
-                        // 获取选择框的已选文本
-                        const selectedOption = Array.from(editMode.querySelectorAll('select option'))
-                            .find(option => option.value === formData[key]);
+            // 保存编辑按钮事件
+            if (saveEditBtn) {
+                saveEditBtn.addEventListener('click', function() {
+                    // 获取表单数据
+                    const dateInput = editMode.querySelector('input[type="date"]');
+                    const timeInput = editMode.querySelector('input[type="time"]');
+                    const staffInput = editMode.querySelector('input[value="张工程师, 李技师"]');
+                    const hoursInput = editMode.querySelector('input[type="number"][min="0"][max="100"]');
+                    const workersInput = editMode.querySelector('input[type="number"][min="1"][max="20"]');
+                    const qualitySelect = editMode.querySelector('select');
+                    const costInput = editMode.querySelector('input[type="number"][step="0.01"]');
+                    const inspectorInput = editMode.querySelector('input[value="王质检"]');
+                    
+                    // 更新视图模式的值
+                    const dateView = viewMode.querySelector('.fa-calendar-check + span + span');
+                    const timeView = viewMode.querySelector('.fa-clock + span + span');
+                    const staffView = viewMode.querySelector('.fa-user-check + span + span');
+                    const hoursView = viewMode.querySelector('.fa-tasks + span + span');
+                    const workersView = viewMode.querySelector('.fa-users + span + span');
+                    const qualityView = viewMode.querySelector('.fa-check-circle + span + span');
+                    const inspectorView = viewMode.querySelector('.fa-signature + span + span');
+                    const costView = viewMode.querySelector('.fa-dollar-sign + span + span');
+                    
+                    if (dateInput && dateView) dateView.textContent = dateInput.value || '2023-06-15';
+                    if (timeInput && timeView) timeView.textContent = timeInput.value || '14:45';
+                    if (staffInput && staffView) staffView.textContent = staffInput.value || '张工程师, 李技师';
+                    if (hoursInput && hoursView) hoursView.textContent = (hoursInput.value || '4') + ' 小时';
+                    if (workersInput && workersView) workersView.textContent = (workersInput.value || '2') + ' 人';
+                    
+                    if (qualitySelect && qualityView) {
+                        const qualityText = qualitySelect.options[qualitySelect.selectedIndex].text;
+                        qualityView.textContent = qualityText;
                         
-                        if (selectedOption) {
-                            valueElement.textContent = selectedOption.textContent;
-                        }
+                        // 根据质检结果设置颜色
+                        if (qualitySelect.value === 'pass') {
+                            qualityView.className = 'text-sm font-medium text-green-600';
+                        } else if (qualitySelect.value === 'conditional') {
+                            qualityView.className = 'text-sm font-medium text-yellow-600';
                         } else {
-                        valueElement.textContent = formData[key];
-                        // 如果是施工人数，添加"人"字
-                        if (key === '施工人数' && !formData[key].includes('人')) {
-                            valueElement.textContent += ' 人';
+                            qualityView.className = 'text-sm font-medium text-red-600';
                         }
                     }
-                }
+                    
+                    if (inspectorInput && inspectorView) inspectorView.textContent = inspectorInput.value || '王质检';
+                    
+                    if (costInput && costView) {
+                        const costValue = parseFloat(costInput.value || '1200.00').toLocaleString('zh-CN', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        });
+                        costView.textContent = costValue + ' 元';
+                    }
+                    
+                    // 切换回查看模式
+                    viewMode.classList.remove('hidden');
+                    editMode.classList.add('hidden');
+                    editRecordsBtn.classList.remove('hidden');
+                    
+                    showToast('保存成功');
+                });
+            }
+            
+            exportBtn.addEventListener('click', function() {
+                showToast('正在导出PDF文件...');
             });
             
-            // 显示成功提示
-            showToast('记录已更新', 'success');
+            printBtn.addEventListener('click', function() {
+                showToast('正在准备打印...');
+                // 实际项目中会调用打印API
+                // window.print();
+            });
             
-            // 切回查看模式
-            viewMode.classList.remove('hidden');
-            editMode.classList.add('hidden');
-        });
-        
-        // 返回顶部按钮
-        function initScrollToTop() {
-            const scrollToTopBtn = document.createElement('button');
-            scrollToTopBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
-            scrollToTopBtn.className = 'fixed bottom-24 right-4 bg-blue-500 text-white rounded-full p-3 shadow-lg opacity-0 transition-opacity duration-300';
-            document.body.appendChild(scrollToTopBtn);
-
-            window.addEventListener('scroll', function() {
-                if (window.pageYOffset > 300) {
-                    scrollToTopBtn.classList.remove('opacity-0');
-                    scrollToTopBtn.classList.add('opacity-100');
+            if (materialDetailBtn) {
+                materialDetailBtn.addEventListener('click', function() {
+                    // 切换材料明细部分的显示/隐藏
+                    const materialDetail = document.querySelector('h2.font-semibold.text-gray-800.mb-3:nth-of-type(4)').parentElement;
+                    if (materialDetail.style.display === 'none') {
+                        materialDetail.style.display = 'block';
+                        this.innerHTML = '<i class="fas fa-eye-slash mr-1"></i>隐藏明细';
                     } else {
-                    scrollToTopBtn.classList.remove('opacity-100');
-                    scrollToTopBtn.classList.add('opacity-0');
-                }
-            });
-
-            scrollToTopBtn.addEventListener('click', function() {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
+                        materialDetail.style.display = 'none';
+                        this.innerHTML = '<i class="fas fa-eye mr-1"></i>查看明细';
+                    }
+                });
+            }
+            
+            // 给照片添加点击预览功能
+            const images = document.querySelectorAll('.aspect-square img');
+            images.forEach(img => {
+                img.addEventListener('click', function() {
+                    showToast('查看照片：' + this.alt);
                 });
             });
-        }
-        
-        // 显示提示消息
-        function showToast(message, type = 'info') {
-            const bgColor = type === 'success' ? '#10B981' : type === 'error' ? '#EF4444' : '#3B82F6';
             
-            Toastify({
-                text: message,
-                duration: 3000,
-                close: true,
-                gravity: "top",
-                position: "center",
-                backgroundColor: bgColor,
-                stopOnFocus: true,
-                className: "rounded-lg text-sm px-4 py-2",
-            }).showToast();
-        }
-        
-        // 导出PDF功能模拟
-        document.querySelector('.action-buttons .secondary-button').addEventListener('click', function() {
-            showToast('正在准备导出PDF...', 'info');
+            // 添加输入限制
+            const hoursInput = document.querySelector('input[type="number"][min="0"][max="100"]');
+            if (hoursInput) {
+                hoursInput.addEventListener('input', function() {
+                    if (this.value < 0) this.value = 0;
+                    if (this.value > 100) this.value = 100;
+                });
+            }
             
-            // 模拟操作延迟
-            setTimeout(() => {
-                showToast('PDF已导出至下载目录', 'success');
-            }, 1500);
-        });
-        
-        // 打印记录功能模拟
-        document.querySelector('.action-buttons .primary-button').addEventListener('click', function() {
-            showToast('正在准备打印...', 'info');
+            const workersInput = document.querySelector('input[type="number"][min="1"][max="20"]');
+            if (workersInput) {
+                workersInput.addEventListener('input', function() {
+                    if (this.value < 1) this.value = 1;
+                    if (this.value > 20) this.value = 20;
+                });
+            }
             
-            // 模拟操作延迟
-            setTimeout(() => {
-                showToast('已发送至打印机队列', 'success');
-            }, 1500);
-        });
-        
-        // 页面初始化
-        document.addEventListener('DOMContentLoaded', function() {
-            // 初始化返回顶部按钮
-            initScrollToTop();
-            
-            // 可以在这里加载实际数据
-            // loadRecordData();
+            const costInput = document.querySelector('input[type="number"][step="0.01"]');
+            if (costInput) {
+                costInput.addEventListener('input', function() {
+                    if (this.value < 0) this.value = 0;
+                    // 格式化为两位小数
+                    if (this.value && !isNaN(this.value)) {
+                        this.value = parseFloat(this.value).toFixed(2);
+                    }
+                });
+            }
         });
     </script>
 </body>
