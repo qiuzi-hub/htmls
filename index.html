@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>堆场验箱系统 - 低保真原型</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .prototype-item {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .prototype-title {
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+        .phone-frame {
+            width: 320px;
+            height: 650px;
+            margin: 0 auto;
+            border-radius: 2rem;
+            overflow: hidden;
+            border: 10px solid #333;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        .phone-frame iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .prototype-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-8">
+    <h1 class="text-3xl font-bold text-center mb-8">堆场验箱系统 - 低保真原型展示</h1>
+    
+    <div class="prototype-container">
+        <div class="prototype-item">
+            <div class="phone-frame">
+                <iframe src="login.html"></iframe>
+            </div>
+            <div class="prototype-title">登录界面</div>
+        </div>
+        
+        <div class="prototype-item">
+            <div class="phone-frame">
+                <iframe src="home.html"></iframe>
+            </div>
+            <div class="prototype-title">主页/工作台</div>
+        </div>
+        
+        <div class="prototype-item">
+            <div class="phone-frame">
+                <iframe src="entry_inspection.html"></iframe>
+            </div>
+            <div class="prototype-title">进场检验</div>
+        </div>
+        
+        <div class="prototype-item">
+            <div class="phone-frame">
+                <iframe src="field_inspection.html"></iframe>
+            </div>
+            <div class="prototype-title">现场检验</div>
+        </div>
+        
+        <div class="prototype-item">
+            <div class="phone-frame">
+                <iframe src="repair_completion.html"></iframe>
+            </div>
+            <div class="prototype-title">维修完成</div>
+        </div>
+        
+        <div class="prototype-item">
+            <div class="phone-frame">
+                <iframe src="repair_completion_files/completion_records.html"></iframe>
+            </div>
+            <div class="prototype-title">完工记录</div>
+        </div>
+        
+        <div class="prototype-item">
+            <div class="phone-frame">
+                <iframe src="photo_upload.html"></iframe>
+            </div>
+            <div class="prototype-title">图片上传</div>
+        </div>
+        
+        <div class="prototype-item">
+            <div class="phone-frame">
+                <iframe src="settings.html"></iframe>
+            </div>
+            <div class="prototype-title">设置</div>
+        </div>
+    </div>
+</body>
+</html> 

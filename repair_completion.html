@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>维修完成 - 堆场验箱系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/app-style.css">
+    <link rel="stylesheet" href="css/mobile-app-style.css">
+    <style>
+        body {
+            max-width: 430px;
+            min-height: 1020px;
+            height: 1020px;
+            margin: 0 auto;
+            position: relative;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            overflow-y: auto;
+        }
+        
+        .app-bottom-nav {
+            max-width: 430px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 h-screen flex flex-col">
+    <!-- 顶部状态栏 -->
+    <div class="bg-white px-4 py-2 flex justify-between items-center">
+        <div class="text-sm text-gray-600">9:41</div>
+        <div class="flex space-x-2">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+    
+    <!-- 头部 - 简化设计 -->
+    <div class="bg-white p-3 shadow-sm flex items-center justify-between">
+        <div class="flex items-center">
+            <a href="home.html" class="mr-3">
+                <i class="fas fa-arrow-left text-gray-600"></i>
+            </a>
+            <h1 class="text-lg font-bold text-gray-800">维修完成</h1>
+        </div>
+        <a href="repair_completion_files/completion_records.html" class="bg-gray-100 px-2 py-1 rounded-lg text-xs text-gray-600 flex items-center">
+            <i class="fas fa-clipboard-list mr-1"></i>
+            <span>完工记录</span>
+        </a>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="p-3 pb-20 overflow-auto">
+        <!-- 集装箱信息卡 -->
+        <div class="bg-white rounded-lg p-3 shadow-sm mb-3">
+            <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center">
+                    <h2 class="font-semibold text-gray-800">维修集装箱</h2>
+                    <span class="ml-2 px-2 py-1 bg-green-100 text-green-600 text-xs rounded-full">已维修</span>
+                </div>
+                <button class="bg-gray-200 text-gray-600 px-2 py-1 rounded text-xs">
+                    <i class="fas fa-qrcode mr-1"></i>扫描箱号
+                </button>
+            </div>
+            
+            <!-- 简化箱号输入 -->
+            <div class="grid grid-cols-2 gap-2 mb-3">
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">箱号编码</p>
+                    <input type="text" placeholder="MSCU-123456-7" class="w-full p-2 border border-gray-200 rounded-lg text-sm">
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">箱号数字</p>
+                    <input type="text" placeholder="1234567" class="w-full p-2 border border-gray-200 rounded-lg text-sm">
+                </div>
+            </div>
+            
+            <!-- 简化基本信息 -->
+            <div class="grid grid-cols-2 gap-2 text-sm">
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">级别</p>
+                    <select class="w-full p-2 border border-gray-200 rounded-lg text-sm">
+                        <option value="G">G（良好）</option>
+                        <option value="M" selected>M（中等）</option>
+                        <option value="B">B（较差）</option>
+                    </select>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">箱属</p>
+                    <input type="text" placeholder="MSC" class="w-full p-2 border border-gray-200 rounded-lg text-sm">
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">尺寸箱型</p>
+                    <select class="w-full p-2 border border-gray-200 rounded-lg text-sm">
+                        <option value="20GP">20尺标准柜</option>
+                        <option value="40GP">40尺标准柜</option>
+                        <option value="40HC" selected>40尺高柜</option>
+                        <option value="40RF">40尺冷藏柜</option>
+                        <option value="45HC">45尺高柜</option>
+                    </select>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">堆场位置</p>
+                    <input type="text" placeholder="A12-05" class="w-full p-2 border border-gray-200 rounded-lg text-sm">
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">批复日期</p>
+                    <input type="date" class="w-full p-2 border border-gray-200 rounded-lg text-sm">
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">入场日期</p>
+                    <input type="date" class="w-full p-2 border border-gray-200 rounded-lg text-sm">
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">施工单位</p>
+                    <input type="text" placeholder="A- 张工程师" class="w-full p-2 border border-gray-200 rounded-lg text-sm">
+                </div>
+            </div>
+            
+            <div class="mt-2">
+                <p class="text-xs text-gray-500 mb-1">入场备注</p>
+                <textarea placeholder="描述集装箱入场时的状态和需维修的项目..." class="w-full p-2 border border-gray-200 rounded-lg text-sm h-20"></textarea>
+            </div>
+        </div>
+        
+        <!-- 维修状态 -->
+        <div class="bg-white rounded-lg p-3 shadow-sm mb-3">
+            <h2 class="font-semibold text-gray-800 mb-3">维修状态</h2>
+            
+            <!-- 简化状态选择 -->
+            <div class="flex space-x-2 mb-3">
+                <label class="flex items-center flex-1 bg-green-50 p-2 rounded-lg border border-green-200">
+                    <input type="radio" name="repair_status" class="mr-2" checked>
+                    <div>
+                        <div class="font-medium text-green-700">已维修</div>
+                        <div class="text-xs text-green-600">所有项目已完成</div>
+                    </div>
+                </label>
+                <label class="flex items-center flex-1 bg-gray-50 p-2 rounded-lg border border-gray-200">
+                    <input type="radio" name="repair_status" class="mr-2">
+                    <div>
+                        <div class="font-medium text-gray-700">未维修</div>
+                        <div class="text-xs text-gray-600">部分项目未完成</div>
+                    </div>
+                </label>
+            </div>
+            
+            <!-- 维修项目列表 -->
+            <div class="space-y-2 mb-2" id="repair-items-container">
+                <div class="flex items-center justify-between bg-gray-50 p-2 rounded-lg">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="repair1" class="mr-2" checked>
+                        <label for="repair1" class="text-sm text-gray-700">右侧板更换</label>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full mr-2">已完成</span>
+                        <button class="text-gray-400 hover:text-red-500 delete-repair-item">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between bg-gray-50 p-2 rounded-lg">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="repair2" class="mr-2" checked>
+                        <label for="repair2" class="text-sm text-gray-700">顶板密封处理</label>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full mr-2">已完成</span>
+                        <button class="text-gray-400 hover:text-red-500 delete-repair-item">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between bg-gray-50 p-2 rounded-lg">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="repair3" class="mr-2" checked>
+                        <label for="repair3" class="text-sm text-gray-700">门铰链紧固</label>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full mr-2">已完成</span>
+                        <button class="text-gray-400 hover:text-red-500 delete-repair-item">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between bg-gray-50 p-2 rounded-lg">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="repair4" class="mr-2" checked>
+                        <label for="repair4" class="text-sm text-gray-700">地板修复</label>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full mr-2">已完成</span>
+                        <button class="text-gray-400 hover:text-red-500 delete-repair-item">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 添加维修项目 -->
+            <div class="flex items-center">
+                <div class="relative flex-1 mr-2">
+                    <input type="text" id="new-repair-item" placeholder="输入新维修项目..." class="w-full p-2 border border-gray-200 rounded-lg text-sm">
+                    <button id="add-repair-item" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-plus-circle text-lg"></i>
+                    </button>
+                </div>
+                
+                <div class="flex space-x-1">
+                    <button class="bg-gray-600 text-white px-2 py-1 rounded-lg text-xs flex items-center quick-add-item" data-item="前板修复">
+                        前板
+                    </button>
+                    <button class="bg-gray-600 text-white px-2 py-1 rounded-lg text-xs flex items-center quick-add-item" data-item="后板修复">
+                        后板
+                    </button>
+                    <button class="bg-gray-600 text-white px-2 py-1 rounded-lg text-xs flex items-center quick-add-item" data-item="左侧板修复">
+                        左侧
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 维修照片 -->
+        <div class="bg-white rounded-lg p-3 shadow-sm mb-3">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="font-semibold text-gray-800">维修照片</h2>
+                <div class="flex space-x-2">
+                    <button class="bg-gray-600 text-white px-2 py-1 rounded-lg text-xs flex items-center">
+                        <i class="fas fa-camera mr-1"></i> 拍照
+                    </button>
+                    <button class="bg-gray-200 text-gray-600 px-2 py-1 rounded-lg text-xs flex items-center">
+                        <i class="fas fa-images mr-1"></i> 相册
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 简化照片网址 -->
+            <div class="grid grid-cols-3 gap-2">
+                <div class="aspect-square bg-gray-100 rounded-lg overflow-hidden relative">
+                    <img src="https://placehold.co/200x200/e5e7eb/a1a1aa?text=右侧板" alt="右侧板" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-xs p-1">
+                        <div class="flex justify-between items-center">
+                            <span class="truncate">右侧板</span>
+                            <i class="fas fa-check-circle text-green-400"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="aspect-square bg-gray-100 rounded-lg overflow-hidden relative">
+                    <img src="https://placehold.co/200x200/e5e7eb/a1a1aa?text=顶板" alt="顶板" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-xs p-1">
+                        <div class="flex justify-between items-center">
+                            <span class="truncate">顶板</span>
+                            <i class="fas fa-check-circle text-green-400"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="aspect-square bg-gray-100 rounded-lg overflow-hidden relative">
+                    <img src="https://placehold.co/200x200/e5e7eb/a1a1aa?text=门铰链" alt="门铰链" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-xs p-1">
+                        <div class="flex justify-between items-center">
+                            <span class="truncate">门铰链</span>
+                            <i class="fas fa-check-circle text-green-400"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="aspect-square bg-gray-100 rounded-lg overflow-hidden relative">
+                    <img src="https://placehold.co/200x200/e5e7eb/a1a1aa?text=地板" alt="地板" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-xs p-1">
+                        <div class="flex justify-between items-center">
+                            <span class="truncate">地板</span>
+                            <i class="fas fa-check-circle text-green-400"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="aspect-square bg-gray-100 rounded-lg flex items-center justify-center border border-dashed border-gray-300">
+                    <i class="fas fa-plus text-gray-400"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 维修备注 -->
+        <div class="bg-white rounded-lg p-3 shadow-sm mb-3">
+            <h2 class="font-semibold text-gray-800 mb-2">维修备注</h2>
+            <textarea placeholder="请描述维修过程中的特殊情况和处理方法..." class="w-full p-2 border border-gray-200 rounded-lg text-sm h-20"></textarea>
+        </div>
+        
+        <!-- 提交按钮 -->
+        <div class="flex space-x-2">
+            <button class="flex-1 bg-gray-200 text-gray-700 py-2 rounded-lg font-medium">
+                保存草稿
+            </button>
+            <button class="flex-1 bg-gray-600 text-white py-2 rounded-lg font-medium shadow-md">
+                确认提交
+            </button>
+        </div>
+    </div>
+    
+    <!-- 底部导航 -->
+    <div class="fixed bottom-0 left-0 right-0 bg-gray-300 border-t border-gray-400 flex justify-around py-2">
+        <a href="home.html" class="flex flex-col items-center text-gray-500">
+            <i class="fas fa-home text-xl"></i>
+            <span class="text-xs mt-0.5">首页</span>
+        </a>
+        <a href="task_list.html" class="flex flex-col items-center text-gray-800">
+            <i class="fas fa-list-alt text-xl"></i>
+            <span class="text-xs mt-0.5">任务</span>
+        </a>
+        <a href="#" class="flex flex-col items-center text-gray-500">
+            <i class="fas fa-chart-bar text-xl"></i>
+            <span class="text-xs mt-0.5">统计</span>
+        </a>
+        <a href="settings.html" class="flex flex-col items-center text-gray-500">
+            <i class="fas fa-user text-xl"></i>
+            <span class="text-xs mt-0.5">我的</span>
+        </a>
+    </div>
+
+    <script>
+        // 获取DOM元素
+        const repairStatusRadios = document.querySelectorAll('input[name="repair_status"]');
+        const repairItemsContainer = document.getElementById('repair-items-container');
+        const addRepairItemBtn = document.getElementById('add-repair-item');
+        const newRepairItemInput = document.getElementById('new-repair-item');
+        const submitBtn = document.querySelector('.bg-gray-600.text-white.py-2');
+        const saveBtn = document.querySelector('.bg-gray-200.text-gray-700.py-2');
+        const cameraBtn = document.querySelector('.bg-gray-600.text-white.px-2.py-1');
+        const albumBtn = document.querySelector('.bg-gray-200.text-gray-600.px-2.py-1');
+        const addPhotoBtn = document.querySelector('.border-dashed.border-gray-300');
+        const containerCodeInput = document.querySelector('input[placeholder="MSCU-123456-7"]');
+        const containerNumberInput = document.querySelector('input[placeholder="1234567"]');
+        const containerOwnerInput = document.querySelector('input[placeholder="MSC"]');
+        const containerLocationInput = document.querySelector('input[placeholder="A12-05"]');
+        const approvalDateInput = document.querySelector('input[type="date"]:nth-of-type(1)');
+        const entryDateInput = document.querySelector('input[type="date"]:nth-of-type(2)');
+        const constructionTeamInput = document.querySelector('input[placeholder="A- 张工程师"]');
+        const entryRemarksInput = document.querySelector('textarea[placeholder="描述集装箱入场时的状态和需维修的项目..."]');
+        
+        // 初始化变量
+        let uploadedPhotos = 4;
+        const maxPhotos = 10;
+        let repairItemCounter = 5; // 开始，因为已经有5个项目
+        
+        // 添加新维修项目
+        addRepairItemBtn.addEventListener('click', addNewRepairItem);
+        newRepairItemInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addNewRepairItem();
+            }
+        });
+        
+        function addNewRepairItem() {
+            const itemText = newRepairItemInput.value.trim();
+            if (!itemText) {
+                showToast('请输入维修项目内容');
+                return;
+            }
+            
+            // 创建新的维修项目元素
+            const itemId = `repair${repairItemCounter++}`;
+            const newItem = document.createElement('div');
+            newItem.className = 'flex items-center justify-between bg-gray-50 p-2 rounded-lg';
+            
+            // 当前选中的修复状态
+            const isFixed = document.querySelector('input[name="repair_status"]:checked')
+                .parentElement.querySelector('.text-green-700');
+            const statusClass = isFixed ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-600';
+            const statusText = isFixed ? '已完成' : '未完成';
+            
+            newItem.innerHTML = `
+                <div class="flex items-center">
+                    <input type="checkbox" id="${itemId}" class="mr-2" ${isFixed ? 'checked' : ''}>
+                    <label for="${itemId}" class="text-sm text-gray-700">${itemText}</label>
+                </div>
+                <div class="flex items-center">
+                    <span class="text-xs ${statusClass} px-2 py-1 rounded-full mr-2">${statusText}</span>
+                    <button class="text-gray-400 hover:text-red-500 delete-repair-item">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            // 添加到容器中
+            repairItemsContainer.appendChild(newItem);
+            
+            // 添加事件监听
+            const checkbox = newItem.querySelector(`#${itemId}`);
+            checkbox.addEventListener('change', handleRepairItemChange);
+            
+            const deleteBtn = newItem.querySelector('.delete-repair-item');
+            deleteBtn.addEventListener('click', function() {
+                newItem.remove();
+                updateRepairStatus();
+            });
+            
+            // 清空输入框
+            newRepairItemInput.value = '';
+            
+            // 更新状态
+            updateRepairStatus();
+            
+            showToast('已添加新维修项目');
+        }
+        
+        // 添加快速添加项目功能
+        function initQuickAddButtons() {
+            document.querySelectorAll('.quick-add-item').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const itemText = this.getAttribute('data-item');
+                    if (itemText) {
+                        newRepairItemInput.value = itemText;
+                        addNewRepairItem();
+                    }
+                });
+            });
+        }
+        
+        // 初始化删除按钮事件
+        function initDeleteButtons() {
+            document.querySelectorAll('.delete-repair-item').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const item = this.closest('.flex.items-center.justify-between');
+                    item.remove();
+                    updateRepairStatus();
+                });
+            });
+        }
+        
+        // 监听维修项目变更
+        function handleRepairItemChange() {
+            const isFixed = document.querySelector('input[name="repair_status"]:checked')
+                .parentElement.querySelector('.text-green-700');
+            if (!isFixed) return; // 如果状态是未维修好，不影响项目状态
+            const statusLabel = this.closest('.flex.items-center.justify-between').querySelector('span');
+            if (this.checked) {
+                statusLabel.textContent = '已完成';
+                statusLabel.className = 'text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full mr-2';
+            } else {
+                statusLabel.textContent = '未完成';
+                statusLabel.className = 'text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full mr-2';
+                
+                // 自动将状态更改为未维修
+                const unfixedRadio = document.querySelector('input[name="repair_status"]:not(:checked)');
+                unfixedRadio.checked = true;
+                const event = new Event('change');
+                unfixedRadio.dispatchEvent(event);
+            }
+        }
+        
+        // 更新维修状态
+        function updateRepairStatus() {
+            // 计算完成率
+            const checkboxes = repairItemsContainer.querySelectorAll('input[type="checkbox"]');
+            const totalItems = checkboxes.length;
+            let completedItems = 0;
+            
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    completedItems++;
+                }
+            });
+            
+            // 更新状态文本
+            const fixedStatusText = document.querySelector('.text-green-700 + div');
+            if (fixedStatusText) {
+                fixedStatusText.textContent = totalItems > 0 ? 
+                    `已完成 ${completedItems}/${totalItems} (${Math.round(completedItems/totalItems*100)}%)` : 
+                    '无维修项目';
+            }
+            
+            // 如果所有项目已完成，自动切换到"已完成"状态
+            if (totalItems > 0 && completedItems === totalItems) {
+                const fixedRadio = document.querySelector('input[name="repair_status"]:first-of-type');
+                if (!fixedRadio.checked) {
+                    fixedRadio.checked = true;
+                    const event = new Event('change');
+                    fixedRadio.dispatchEvent(event);
+                }
+            }
+        }
+        
+        // 监听维修状态变化
+        repairStatusRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                const isFixed = radio.parentElement.querySelector('.text-green-700');
+                
+                // 修改标签状态
+                const statusLabel = document.querySelector('.flex.items-center h2 + span');
+                if (isFixed) {
+                    statusLabel.textContent = '已完成';
+                    statusLabel.className = 'ml-2 px-2 py-1 bg-green-100 text-green-600 text-xs rounded-full';
+                } else {
+                    statusLabel.textContent = '未维修';
+                    statusLabel.className = 'ml-2 px-2 py-1 bg-red-100 text-red-600 text-xs rounded-full';
+                }
+                
+                // 更新项目状态标记
+                const items = repairItemsContainer.querySelectorAll('.flex.items-center.justify-between');
+                items.forEach(item => {
+                    const checkbox = item.querySelector('input[type="checkbox"]');
+                    const statusLabel = item.querySelector('span');
+                    
+                    if (isFixed) {
+                        // 已完成状态，所有项目都标记为已完成
+                        checkbox.checked = true;
+                        statusLabel.textContent = '已完成';
+                        statusLabel.className = 'text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full mr-2';
+                    } else {
+                        // 未维修状态，按照实际勾选情况显示
+                        if (checkbox.checked) {
+                            statusLabel.textContent = '已完成';
+                            statusLabel.className = 'text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full mr-2';
+                        } else {
+                            statusLabel.textContent = '未完成';
+                            statusLabel.className = 'text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full mr-2';
+                        }
+                    }
+                });
+            });
+        });
+        
+        // 模拟相册选择功能
+        albumBtn.addEventListener('click', function() {
+            showToast('打开相册选择');
+        });
+        
+        // 模拟相机功能
+        cameraBtn.addEventListener('click', function() {
+            showToast('打开相机');
+        });
+        
+        // 模拟添加照片功能
+        addPhotoBtn.addEventListener('click', function() {
+            if (uploadedPhotos >= maxPhotos) {
+                showToast('已达到最大照片数');
+                return;
+            }
+            
+            uploadedPhotos++;
+            updatePhotoCount();
+            showToast('已添加照片');
+        });
+        
+        // 更新照片计数
+        function updatePhotoCount() {
+            const countElement = document.querySelector('.flex.justify-between.items-center.text-xs span');
+            if (countElement) {
+                countElement.textContent = `已上传${uploadedPhotos}/${maxPhotos} 张照片`;
+            }
+        }
+        
+        // 更新扫描箱号按钮，模拟扫描功能
+        document.querySelector('.bg-gray-200.text-gray-600.px-2.py-1').addEventListener('click', function() {
+            const randomNum = Math.floor(Math.random() * 9000000) + 1000000;
+            containerCodeInput.value = `MSCU-${randomNum}-${Math.floor(Math.random() * 9) + 1}`;
+            containerNumberInput.value = randomNum;
+            showToast('扫描成功');
+        });
+        
+        // 保存草稿功能
+        saveBtn.addEventListener('click', function() {
+            showToast('已保存草稿');
+        });
+        
+        // 提交表单功能
+        submitBtn.addEventListener('click', function() {
+            // 表单验证
+            let valid = true;
+            let message = '';
+            
+            // 检查基本信息
+            if (!containerCodeInput.value.trim()) {
+                valid = false;
+                message = '请填写箱号编码';
+                containerCodeInput.classList.add('border-red-300');
+            } else {
+                containerCodeInput.classList.remove('border-red-300');
+            }
+            
+            if (!containerNumberInput.value.trim()) {
+                valid = false;
+                message = '请填写箱号数字';
+                containerNumberInput.classList.add('border-red-300');
+            } else {
+                containerNumberInput.classList.remove('border-red-300');
+            }
+            
+            if (!containerOwnerInput.value.trim()) {
+                valid = false;
+                message = '请填写箱属';
+                containerOwnerInput.classList.add('border-red-300');
+            } else {
+                containerOwnerInput.classList.remove('border-red-300');
+            }
+            
+            if (!approvalDateInput.value) {
+                valid = false;
+                message = '请选择批复日期';
+                approvalDateInput.classList.add('border-red-300');
+            } else {
+                approvalDateInput.classList.remove('border-red-300');
+            }
+            
+            if (!entryDateInput.value) {
+                valid = false;
+                message = '请选择入场日期';
+                entryDateInput.classList.add('border-red-300');
+            } else {
+                entryDateInput.classList.remove('border-red-300');
+            }
+            
+            // 检查是否有维修项目
+            const repairItems = repairItemsContainer.querySelectorAll('input[type="checkbox"]');
+            if (repairItems.length === 0) {
+                valid = false;
+                message = '请至少添加一个维修项目';
+            } else {
+                const hasCheckedItems = Array.from(repairItems).some(item => item.checked);
+                if (!hasCheckedItems) {
+                    valid = false;
+                    message = '请至少完成一个维修项目';
+                }
+            }
+            
+            // 检查照片上传
+            if (uploadedPhotos === 0) {
+                valid = false;
+                message = '请至少上传一张照片';
+            }
+            
+            if (valid) {
+                showToast('提交成功，正在返回...');
+                setTimeout(() => {
+                    window.location.href = 'repair_completion_files/completion_records.html';
+                }, 2000);
+            } else {
+                showToast(message);
+            }
+        });
+        
+        // 显示提示消息
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-lg text-sm z-50';
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+                toast.style.transition = 'opacity 0.5s';
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 500);
+            }, 2000);
+        }
+        
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', function() {
+            // 默认选中第一个状态选项
+            const firstStatusOption = document.querySelector('input[name="repair_status"]');
+            if (firstStatusOption) {
+                firstStatusOption.checked = true;
+            }
+            
+            // 设置今天的日期为默认值
+            const today = new Date().toISOString().split('T')[0];
+            if (approvalDateInput && !approvalDateInput.value) {
+                approvalDateInput.value = today;
+            }
+            if (entryDateInput && !entryDateInput.value) {
+                entryDateInput.value = today;
+            }
+            
+            // 初始化删除按钮事件
+            initDeleteButtons();
+            
+            // 初始化快速添加按钮
+            initQuickAddButtons();
+            
+            // 初始化维修项目事件
+            const checkboxes = repairItemsContainer.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', handleRepairItemChange);
+            });
+            
+            // 添加图片点击预览功能
+            const images = document.querySelectorAll('.aspect-square img');
+            images.forEach(img => {
+                img.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    showToast('预览图片' + img.alt);
+                });
+            });
+            
+            // 添加删除图片功能
+            const deleteButtons = document.querySelectorAll('.bg-red-500');
+            deleteButtons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const photoItem = this.closest('.aspect-square');
+                    photoItem.style.opacity = '0.5';
+                    uploadedPhotos--;
+                    updatePhotoCount();
+                    showToast('已删除照片');
+                });
+            });
+            
+            // 初始化完成率显示
+            updateRepairStatus();
+        });
+    </script>
+</body>
+</html>
+

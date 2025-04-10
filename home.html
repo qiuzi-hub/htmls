@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>主页 - 堆场验箱系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/mobile-app-style.css">
+    <style>
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 20px;
+            background-color: var(--app-primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            color: white;
+            font-size: 24px;
+        }
+        
+        .feature-item {
+            background-color: white;
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: var(--app-card-shadow);
+            transition: all 0.2s;
+        }
+        
+        .feature-item:active {
+            transform: scale(0.98);
+            background-color: #f9fafb;
+        }
+        
+        .task-item {
+            position: relative;
+        }
+        
+        .task-status-indicator {
+            width: 4px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            border-top-left-radius: var(--app-border-radius);
+            border-bottom-left-radius: var(--app-border-radius);
+        }
+    </style>
+</head>
+<body>
+    <!-- 状态栏 -->
+    <div class="app-status-bar">
+        <div>9:41</div>
+        <div class="flex items-center space-x-2">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+    
+    <!-- 头部 -->
+    <div class="p-4 bg-white shadow-sm">
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-lg font-bold text-gray-800">堆场验箱系统</h1>
+                <p class="text-xs text-gray-500">工号：A1234 | 张师傅</p>
+            </div>
+            <div class="w-10 h-10 bg-gray-600 rounded-full overflow-hidden flex items-center justify-center text-white cursor-pointer">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 核心统计数据 -->
+    <div class="p-4">
+        <div class="app-card p-0 overflow-hidden">
+            <div class="flex">
+                <div class="text-center p-4 flex-1 border-r border-gray-100">
+                    <p class="text-xs text-gray-500 mb-1">待处理</p>
+                    <p class="text-xl font-bold text-gray-600">8</p>
+                </div>
+                <div class="text-center p-4 flex-1">
+                    <p class="text-xs text-gray-500 mb-1">今日完成</p>
+                    <p class="text-xl font-bold text-gray-600">12</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 主要功能模块 -->
+    <div class="px-4 pt-2 pb-4">
+        <h2 class="text-base font-medium text-gray-700 mb-4">核心功能</h2>
+        <div class="grid grid-cols-2 gap-4">
+            <a href="entry_inspection.html" class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-clipboard-check"></i>
+                </div>
+                <p class="text-sm font-medium text-gray-800 text-center">进场检验</p>
+            </a>
+            
+            <a href="field_inspection.html" class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <p class="text-sm font-medium text-gray-800 text-center">现场检验</p>
+            </a>
+            
+            <a href="repair_completion.html" class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <p class="text-sm font-medium text-gray-800 text-center">维修完成</p>
+            </a>
+            
+            <a href="photo_upload.html" class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-camera"></i>
+                </div>
+                <p class="text-sm font-medium text-gray-800 text-center">图片上传</p>
+            </a>
+            
+            <a href="task_list.html" class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-clipboard-list"></i>
+                </div>
+                <p class="text-sm font-medium text-gray-800 text-center">任务列表</p>
+            </a>
+            
+            <a href="approval_management.html" class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <p class="text-sm font-medium text-gray-800 text-center">审批管理</p>
+            </a>
+        </div>
+    </div>
+    
+    <!-- 最近任务 -->
+    <div class="px-4 pb-24">
+        <div class="flex justify-between items-center mb-3">
+            <h2 class="text-base font-medium text-gray-700">待处理任务</h2>
+            <a href="task_list.html" class="text-xs text-gray-600 flex items-center">
+                全部 <i class="fas fa-chevron-right ml-1 text-xs"></i>
+            </a>
+        </div>
+        
+        <div class="space-y-3">
+            <div class="app-card p-3 relative task-item">
+                <div class="task-status-indicator bg-yellow-500"></div>
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center pl-2">
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-800">MSCU-123456-7</h3>
+                            <p class="text-xs text-gray-500">40尺高柜 | A区-12-05</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-end">
+                        <span class="px-2 py-0.5 bg-yellow-100 text-yellow-700 text-xs rounded-full mb-1">进行中</span>
+                        <span class="text-xs text-gray-500">10:30</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="app-card p-3 relative task-item">
+                <div class="task-status-indicator bg-red-500"></div>
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center pl-2">
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-800">HLXU-345678-9</h3>
+                            <p class="text-xs text-gray-500">40尺冷藏柜 | B区-05-12</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-end">
+                        <span class="px-2 py-0.5 bg-red-100 text-red-700 text-xs rounded-full mb-1">待处理</span>
+                        <span class="text-xs text-gray-500">11:45</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 底部导航 -->
+    <div class="app-bottom-nav">
+        <a href="home.html" class="app-nav-item active">
+            <i class="fas fa-home"></i>
+            <span>首页</span>
+        </a>
+        <a href="task_list.html" class="app-nav-item">
+            <i class="fas fa-list-alt"></i>
+            <span>任务</span>
+        </a>
+        <a href="#" class="app-nav-item">
+            <i class="fas fa-chart-bar"></i>
+            <span>统计</span>
+        </a>
+        <a href="settings.html" class="app-nav-item">
+            <i class="fas fa-user"></i>
+            <span>我的</span>
+        </a>
+    </div>
+</body>
+</html> 

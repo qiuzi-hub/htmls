@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>工时录入 - 堆场验箱系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/app-style.css">
+    <link rel="stylesheet" href="css/mobile-app-style.css">
+    <style>
+        body {
+            max-width: 430px;
+            min-height: 1020px;
+            height: 1020px;
+            margin: 0 auto;
+            position: relative;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            overflow-y: auto;
+        }
+        
+        .app-bottom-nav {
+            max-width: 430px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<!-- ... existing code ... -->
+
+<!-- 底部栏 -->
+<div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-10">
+    <div class="grid grid-cols-5 h-16">
+        <a href="task_list.html" class="flex flex-col items-center justify-center">
+            <i class="fas fa-tasks text-gray-600"></i>
+            <span class="text-xs mt-1 text-gray-600">任务</span>
+        </a>
+        <a href="working_hours.html" class="flex flex-col items-center justify-center text-blue-500">
+            <i class="fas fa-clock"></i>
+            <span class="text-xs mt-1">工时</span>
+        </a>
+        <a href="photo_upload.html" class="flex flex-col items-center justify-center text-gray-600">
+            <i class="fas fa-camera"></i>
+            <span class="text-xs mt-1">照片</span>
+        </a>
+        <a href="repair_completion.html" class="flex flex-col items-center justify-center text-gray-600">
+            <i class="fas fa-tools"></i>
+            <span class="text-xs mt-1">维修</span>
+        </a>
+        <a href="settings.html" class="flex flex-col items-center justify-center text-gray-600">
+            <i class="fas fa-user-cog"></i>
+            <span class="text-xs mt-1">设置</span>
+        </a>
+    </div>
+</div>
+
+<!-- ... existing code ... -->
+
+<!-- Toast消息 -->
+<div id="toast" class="fixed bottom-16 left-0 right-0 mx-auto w-4/5 max-w-sm bg-gray-800 text-white p-2 rounded-lg text-center text-sm hidden transition-all duration-300 transform translate-y-4 opacity-0">
+    工时记录已提交
+</div>
+
+<!-- ... existing code ... -->
+
+<!-- 筛选弹窗 -->
+<div id="filter-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg w-11/12 max-w-sm">
+        <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+            <h3 class="font-medium text-sm">筛选条件</h3>
+            <button id="close-filter" class="text-gray-500">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="p-4">
+            <div class="mb-3">
+                <h4 class="text-xs font-medium text-gray-700 mb-2">日期范围</h4>
+                <div class="flex gap-2">
+                    <input type="date" class="border border-gray-300 rounded p-1 text-xs flex-1">
+                    <span class="text-xs self-center">至</span>
+                    <input type="date" class="border border-gray-300 rounded p-1 text-xs flex-1">
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <h4 class="text-xs font-medium text-gray-700 mb-2">工作类型</h4>
+                <div class="grid grid-cols-2 gap-2">
+                    <label class="inline-flex items-center">
+                        <input type="checkbox" class="form-checkbox" checked>
+                        <span class="ml-1 text-xs">进场检查</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="checkbox" class="form-checkbox" checked>
+                        <span class="ml-1 text-xs">现场检查</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="checkbox" class="form-checkbox" checked>
+                        <span class="ml-1 text-xs">维修确认</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="checkbox" class="form-checkbox" checked>
+                        <span class="ml-1 text-xs">图片上传</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="flex space-x-3 mt-4">
+                <button id="reset-filter" class="flex-1 bg-gray-200 text-gray-600 py-2 rounded-lg text-sm">重置</button>
+                <button id="apply-filter" class="flex-1 bg-blue-500 text-white py-2 rounded-lg text-sm">应用筛选</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 添加工时记录弹窗 -->
+<div id="add-record-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg w-11/12 max-w-sm">
+        <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+            <h3 class="font-medium text-sm">添加工时记录</h3>
+            <button id="close-add-record" class="text-gray-500">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="p-4">
+            <form id="work-hours-form">
+                <div class="mb-3">
+                    <label class="block text-xs text-gray-500 mb-1">集装箱号</label>
+                    <input type="text" class="w-full border border-gray-300 rounded-lg p-2 text-sm" placeholder="例如: MSCU-123456-7">
+                </div>
+                
+                <div class="mb-3">
+                    <label class="block text-xs text-gray-500 mb-1">工作类型</label>
+                    <select class="w-full border border-gray-300 rounded-lg p-2 text-sm">
+                        <option>进场检查</option>
+                        <option>现场检查</option>
+                        <option>维修确认</option>
+                        <option>图片上传</option>
+                    </select>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div>
+                        <label class="block text-xs text-gray-500 mb-1">工作日期</label>
+                        <input type="date" class="w-full border border-gray-300 rounded-lg p-2 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-500 mb-1">工作时长(小时)</label>
+                        <input type="number" class="w-full border border-gray-300 rounded-lg p-2 text-sm" min="0.5" step="0.5" value="1">
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="block text-xs text-gray-500 mb-1">备注</label>
+                    <textarea class="w-full border border-gray-300 rounded-lg p-2 text-sm" rows="3" placeholder="输入备注信息..."></textarea>
+                </div>
+                
+                <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg text-sm mt-2">提交</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ... existing code ... -->
+
+document.addEventListener('DOMContentLoaded', function() {
+    // 添加记录按钮
+    const addButton = document.querySelector('.fixed.right-4.bottom-20');
+    const addRecordModal = document.getElementById('add-record-modal');
+    const closeAddRecord = document.getElementById('close-add-record');
+    const workHoursForm = document.getElementById('work-hours-form');
+    
+    // 筛选按钮
+    const filterButton = document.querySelector('.mr-2.bg-gray-100');
+    const filterModal = document.getElementById('filter-modal');
+    const closeFilter = document.getElementById('close-filter');
+    const applyFilter = document.getElementById('apply-filter');
+    const resetFilter = document.getElementById('reset-filter');
+    
+    // Toast消息
+    const toast = document.getElementById('toast');
+    
+    if (addButton) {
+        addButton.addEventListener('click', function() {
+            addRecordModal.classList.remove('hidden');
+        });
+    }
+    
+    if (closeAddRecord) {
+        closeAddRecord.addEventListener('click', function() {
+            addRecordModal.classList.add('hidden');
+        });
+    }
+    
+    if (workHoursForm) {
+        workHoursForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // 获取表单数据
+            const containerNo = this.querySelector('input[placeholder="例如: MSCU-123456-7"]').value;
+            const workType = this.querySelector('select').value;
+            const workDate = this.querySelector('input[type="date"]').value;
+            const workHours = this.querySelector('input[type="number"]').value;
+            const remark = this.querySelector('textarea').value;
+            
+            // 关闭弹窗
+            addRecordModal.classList.add('hidden');
+            
+            // 显示提交成功消息
+            showToast('工时记录已提交');
+            
+            // 可以在这里添加新记录到列表
+            addWorkRecord(containerNo, workType, workDate, workHours, remark);
+        });
+    }
+    
+    if (filterButton) {
+        filterButton.addEventListener('click', function() {
+            filterModal.classList.remove('hidden');
+        });
+    }
+    
+    if (closeFilter) {
+        closeFilter.addEventListener('click', function() {
+            filterModal.classList.add('hidden');
+        });
+    }
+    
+    if (applyFilter) {
+        applyFilter.addEventListener('click', function() {
+            // 应用筛选逻辑
+            filterModal.classList.add('hidden');
+            showToast('筛选已应用');
+        });
+    }
+    
+    if (resetFilter) {
+        resetFilter.addEventListener('click', function() {
+            // 重置筛选选项
+            const checkboxes = filterModal.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = true;
+            });
+            
+            const dateInputs = filterModal.querySelectorAll('input[type="date"]');
+            dateInputs.forEach(input => {
+                input.value = '';
+            });
+        });
+    }
+    
+    // 显示Toast消息
+    function showToast(message) {
+        toast.textContent = message;
+        toast.classList.remove('hidden', 'translate-y-4', 'opacity-0');
+        
+        setTimeout(() => {
+            toast.classList.add('translate-y-4', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 300);
+        }, 2000);
+    }
+    
+    // 添加新的工时记录到列表
+    function addWorkRecord(containerNo, workType, workDate, workHours, remark) {
+        const recordList = document.querySelector('.space-y-3');
+        if (!recordList) return;
+        
+        const formattedDate = new Date(workDate).toLocaleDateString('zh-CN', {
+            month: 'short',
+            day: 'numeric'
+        });
+        
+        const newRecord = document.createElement('div');
+        newRecord.className = 'bg-white rounded-lg shadow-sm';
+        newRecord.innerHTML = `
+            <div class="p-3">
+                <div class="flex justify-between items-center mb-2">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-2">
+                            <i class="fas fa-cube text-blue-500"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-800">${containerNo || 'MSCU-123456-7'}</h3>
+                            <div class="flex items-center mt-1">
+                                <span class="text-xs text-gray-500">${workType}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-sm font-medium text-gray-800">${workHours} 小时</div>
+                        <div class="text-xs text-gray-500">${formattedDate || '6月15日'}</div>
+                    </div>
+                </div>
+                ${remark ? `<div class="mt-2 text-xs text-gray-500">${remark}</div>` : ''}
+            </div>
+        `;
+        
+        recordList.insertBefore(newRecord, recordList.firstChild);
+    }
+}); 

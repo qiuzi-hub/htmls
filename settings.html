@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>设置 - 堆场验箱系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/app-style.css">
+    <link rel="stylesheet" href="css/mobile-app-style.css">
+    <style>
+        body {
+            max-width: 430px;
+            min-height: 1020px;
+            height: 1020px;
+            margin: 0 auto;
+            position: relative;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            overflow-y: auto;
+        }
+        
+        .app-bottom-nav {
+            max-width: 430px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 h-screen flex flex-col">
+    <!-- 顶部状态栏 -->
+    <div class="bg-white px-4 py-2 flex justify-between items-center">
+        <div class="text-sm text-gray-600">9:41</div>
+        <div class="flex space-x-2">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+    
+    <!-- 头部 - 简化 -->
+    <div class="bg-white p-3 shadow-sm">
+        <h1 class="text-lg font-bold text-gray-800">账号与设置</h1>
+    </div>
+    
+    <!-- 用户信息 - 精简布局 -->
+    <div class="p-3 pb-20">
+        <div class="bg-white rounded-lg p-3 shadow-sm mb-3">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-gray-600 rounded-full overflow-hidden flex items-center justify-center text-white mr-3">
+                    <i class="fas fa-user text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="font-medium text-gray-800">张师傅</h2>
+                    <p class="text-xs text-gray-500">工号: A1234</p>
+                </div>
+                <button class="ml-auto text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-lg">
+                    修改密码
+                </button>
+            </div>
+        </div>
+        
+        <!-- 工作信息 - 新增相关信息 -->
+        <div class="bg-white rounded-lg shadow-sm mb-3">
+            <div class="flex justify-between p-3 border-b border-gray-100">
+                <span class="text-sm text-gray-500">用户角色</span>
+                <span class="text-sm text-gray-800">验箱技术员</span>
+            </div>
+            <div class="flex justify-between p-3 border-b border-gray-100">
+                <span class="text-sm text-gray-500">所属部门</span>
+                <span class="text-sm text-gray-800">维修组 - A组</span>
+            </div>
+            <div class="flex justify-between p-3">
+                <span class="text-sm text-gray-500">当前版本</span>
+                <span class="text-sm text-gray-800">v2.0.5</span>
+            </div>
+        </div>
+        
+        <!-- 基本设置 - 简 -->
+        <div class="bg-white rounded-lg shadow-sm mb-3">
+            <div class="flex items-center justify-between p-3 border-b border-gray-100">
+                <div class="flex items-center">
+                    <i class="fas fa-bell text-gray-600 w-5 text-center mr-3"></i>
+                    <span class="text-sm text-gray-800">消息通知</span>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" class="sr-only peer" checked>
+                    <div class="w-9 h-5 bg-gray-200 rounded-full peer peer-checked:bg-gray-600"></div>
+                    <div class="absolute w-3 h-3 bg-white rounded-full left-1 top-1 peer-checked:left-5 transition-all"></div>
+                </label>
+            </div>
+            
+            <div class="flex items-center justify-between p-3 border-b border-gray-100">
+                <div class="flex items-center">
+                    <i class="fas fa-database text-gray-600 w-5 text-center mr-3"></i>
+                    <span class="text-sm text-gray-800">清除缓存</span>
+                </div>
+                <div class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-lg">
+                    23.5MB
+                </div>
+            </div>
+            
+            <div class="flex items-center justify-between p-3">
+                <div class="flex items-center">
+                    <i class="fas fa-language text-gray-600 w-5 text-center mr-3"></i>
+                    <span class="text-sm text-gray-800">语言设置</span>
+                </div>
+                <div class="flex items-center">
+                    <span class="text-xs text-gray-500 mr-1">简体中文</span>
+                    <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 支持与帮助 - 简化 -->
+        <div class="bg-white rounded-lg shadow-sm mb-3">
+            <a href="#" class="flex items-center justify-between p-3 border-b border-gray-100">
+                <div class="flex items-center">
+                    <i class="fas fa-question-circle text-gray-600 w-5 text-center mr-3"></i>
+                    <span class="text-sm text-gray-800">帮助中心</span>
+                </div>
+                <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+            </a>
+            
+            <a href="#" class="flex items-center justify-between p-3 border-b border-gray-100">
+                <div class="flex items-center">
+                    <i class="fas fa-headset text-gray-600 w-5 text-center mr-3"></i>
+                    <span class="text-sm text-gray-800">联系客服</span>
+                </div>
+                <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+            </a>
+            
+            <a href="#" class="flex items-center justify-between p-3">
+                <div class="flex items-center">
+                    <i class="fas fa-info-circle text-gray-600 w-5 text-center mr-3"></i>
+                    <span class="text-sm text-gray-800">关于系统</span>
+                </div>
+                <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+            </a>
+        </div>
+        
+        <!-- 退出登录按钮 -->
+        <button class="w-full bg-gray-600 text-white py-2.5 rounded-lg font-medium shadow-md">
+            退出登录
+        </button>
+    </div>
+    
+    <!-- 底部导航 -->
+    <div class="fixed bottom-0 left-0 right-0 bg-gray-300 border-t border-gray-400 flex justify-around py-2">
+        <a href="home.html" class="flex flex-col items-center text-gray-500">
+            <i class="fas fa-home text-xl"></i>
+            <span class="text-xs mt-0.5">首页</span>
+        </a>
+        <a href="task_list.html" class="flex flex-col items-center text-gray-500">
+            <i class="fas fa-list-alt text-xl"></i>
+            <span class="text-xs mt-0.5">任务</span>
+        </a>
+        <a href="#" class="flex flex-col items-center text-gray-500">
+            <i class="fas fa-chart-bar text-xl"></i>
+            <span class="text-xs mt-0.5">统计</span>
+        </a>
+        <a href="settings.html" class="flex flex-col items-center text-gray-800">
+            <i class="fas fa-user text-xl"></i>
+            <span class="text-xs mt-0.5">我的</span>
+        </a>
+    </div>
+
+    <!-- 语言选择弹窗 -->
+    <div id="language-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg w-11/12 max-w-sm">
+            <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                <h3 class="font-medium text-gray-800">选择语言</h3>
+                <button id="close-language" class="text-gray-500">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-4">
+                <div class="space-y-2">
+                    <label class="flex items-center">
+                        <input type="radio" name="language" value="zh" checked class="form-radio">
+                        <span class="ml-2">简体中文</span>
+                    </label>
+                    <label class="flex items-center">
+                        <input type="radio" name="language" value="en" class="form-radio">
+                        <span class="ml-2">English</span>
+                    </label>
+                </div>
+                <button id="apply-language" class="w-full bg-blue-500 text-white py-2 rounded-lg text-sm mt-4">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 深色模式切换
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        if (darkModeToggle) {
+            darkModeToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    document.body.classList.add('dark-mode');
+                    // 保存用户偏好
+                    localStorage.setItem('darkMode', 'enabled');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    // 保存用户偏好
+                    localStorage.setItem('darkMode', 'disabled');
+                }
+            });
+            
+            // 检查用户之前的偏好
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                darkModeToggle.checked = true;
+                document.body.classList.add('dark-mode');
+            }
+        }
+        
+        // 语言选择
+        const languageSelector = document.querySelector('.text-sm.text-gray-500');
+        const languageModal = document.getElementById('language-modal');
+        const closeLanguage = document.getElementById('close-language');
+        const applyLanguage = document.getElementById('apply-language');
+        
+        if (languageSelector) {
+            languageSelector.addEventListener('click', function() {
+                if (languageModal) {
+                    languageModal.classList.remove('hidden');
+                }
+            });
+        }
+        
+        if (closeLanguage) {
+            closeLanguage.addEventListener('click', function() {
+                languageModal.classList.add('hidden');
+            });
+        }
+        
+        if (applyLanguage) {
+            applyLanguage.addEventListener('click', function() {
+                const selectedLanguage = document.querySelector('input[name="language"]:checked');
+                if (selectedLanguage) {
+                    // 这里可以实现语言切换逻辑
+                    console.log('语言已切换到: ' + selectedLanguage.value);
+                    
+                    // 更新显示文本
+                    if (selectedLanguage.value === 'en') {
+                        languageSelector.innerHTML = 'English <i class="fas fa-chevron-right text-gray-400 text-xs ml-2"></i>';
+                    } else {
+                        languageSelector.innerHTML = '简体中文 <i class="fas fa-chevron-right text-gray-400 text-xs ml-2"></i>';
+                    }
+                    
+                    languageModal.classList.add('hidden');
+                }
+            });
+        }
+        
+        // 清除缓存
+        const clearCacheButton = document.querySelector('a:has(.fa-database)');
+        if (clearCacheButton) {
+            clearCacheButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                if (confirm('确定要清除所有缓存数据吗？')) {
+                    // 清除本地存储
+                    localStorage.clear();
+                    // 显示提示
+                    alert('缓存已清除');
+                }
+            });
+        }
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>注册 - 堆场验箱系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/app-style.css">
+    <link rel="stylesheet" href="css/mobile-app-style.css">
+    <style>
+        body {
+            max-width: 430px;
+            min-height: 1020px;
+            height: 1020px;
+            margin: 0 auto;
+            position: relative;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            overflow-y: auto;
+        }
+        
+        .app-bottom-nav {
+            max-width: 430px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 h-screen flex flex-col">
+    <!-- 顶部状态栏 -->
+    <div class="bg-white px-4 py-2 flex justify-between items-center">
+        <div class="text-sm text-gray-600">9:41</div>
+        <div class="flex space-x-2">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+    
+    <div class="flex-1 flex flex-col justify-center px-8">
+        <div class="mb-6 text-center">
+            <div class="w-20 h-20 rounded-xl mx-auto mb-4 overflow-hidden bg-gray-600 flex items-center justify-center text-white text-3xl">
+                <i class="fas fa-boxes"></i>
+            </div>
+            <h1 class="text-2xl font-bold text-gray-800">堆场验箱系统</h1>
+            <p class="text-sm text-gray-500">创建新账户</p>
+        </div>
+        
+        <div class="space-y-3">
+            <div class="bg-white rounded-xl p-4 shadow-sm">
+                <div class="flex items-center border-b border-gray-200 pb-2">
+                    <i class="fas fa-user text-gray-400 mr-3"></i>
+                    <input type="text" placeholder="工号" class="w-full outline-none text-gray-700">
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl p-4 shadow-sm">
+                <div class="flex items-center border-b border-gray-200 pb-2">
+                    <i class="fas fa-user-tag text-gray-400 mr-3"></i>
+                    <input type="text" placeholder="姓名" class="w-full outline-none text-gray-700">
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl p-4 shadow-sm">
+                <div class="flex items-center border-b border-gray-200 pb-2">
+                    <i class="fas fa-mobile-alt text-gray-400 mr-3"></i>
+                    <input type="tel" placeholder="手机号码" class="w-full outline-none text-gray-700">
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl p-4 shadow-sm">
+                <div class="flex items-center border-b border-gray-200 pb-2">
+                    <i class="fas fa-lock text-gray-400 mr-3"></i>
+                    <input type="password" placeholder="设置密码" class="w-full outline-none text-gray-700">
+                    <i class="fas fa-eye-slash text-gray-400"></i>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl p-4 shadow-sm">
+                <div class="flex items-center border-b border-gray-200 pb-2">
+                    <i class="fas fa-lock text-gray-400 mr-3"></i>
+                    <input type="password" placeholder="确认密码" class="w-full outline-none text-gray-700">
+                    <i class="fas fa-eye-slash text-gray-400"></i>
+                </div>
+            </div>
+            
+            <button class="w-full bg-gray-600 text-white py-3 rounded-xl font-medium shadow-md mt-4">
+                注册
+            </button>
+            
+            <div class="flex justify-center items-center text-sm pt-2">
+                <p class="text-gray-600">已有账户？</p>
+                <a href="login.html" class="text-gray-600 font-bold ml-1">立即登录</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="text-center text-xs text-gray-400 py-4">
+        版本 2.0.0 © 2023 堆场验箱系统
+    </div>
+</body>
+</html> 

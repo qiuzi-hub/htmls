@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>登录 - 堆场验箱系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/mobile-app-style.css">
+    <style>
+        .app-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 24px;
+            background-color: var(--app-primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 36px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-container {
+            padding: 20px;
+            margin-top: 40px;
+        }
+        
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .input-group i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--app-text-secondary);
+            font-size: 18px;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            padding-left: 48px;
+            border: 1px solid var(--app-border-color);
+            border-radius: 12px;
+            font-size: 16px;
+            background-color: white;
+            transition: border-color 0.2s;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--app-highlight-color);
+            box-shadow: 0 0 0 3px rgba(75, 85, 99, 0.1);
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--app-text-secondary);
+            cursor: pointer;
+        }
+        
+        .login-button {
+            background-color: var(--app-primary-color);
+            color: white;
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 500;
+            margin-top: 32px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+        
+        .login-button:active {
+            transform: scale(0.98);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .auth-footer {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: var(--app-text-secondary);
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 状态栏 -->
+    <div class="app-status-bar">
+        <div>9:41</div>
+        <div class="flex items-center space-x-2">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+    
+    <!-- 登录表单 -->
+    <div class="form-container">
+        <div class="text-center mb-10">
+            <div class="app-logo">
+                <i class="fas fa-boxes"></i>
+            </div>
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">堆场验箱系统</h1>
+            <p class="text-sm text-gray-500">快速高效地完成验箱工作</p>
+        </div>
+        
+        <div class="input-group">
+            <i class="fas fa-user"></i>
+            <input type="text" placeholder="请输入工号" class="focus:outline-none">
+        </div>
+        
+        <div class="input-group">
+            <i class="fas fa-lock"></i>
+            <input type="password" placeholder="请输入密码" class="focus:outline-none">
+            <i class="fas fa-eye-slash toggle-password"></i>
+        </div>
+        
+        <div class="flex justify-between items-center mt-4 px-1">
+            <div class="flex items-center">
+                <input type="checkbox" id="remember" class="w-4 h-4 mr-2 accent-gray-600">
+                <label for="remember" class="text-sm text-gray-600">记住密码</label>
+            </div>
+            <a href="#" class="text-sm text-gray-600">忘记密码?</a>
+        </div>
+        
+        <button class="login-button">
+            登录
+        </button>
+        
+        <div class="text-center mt-6">
+            <span class="text-sm text-gray-600">还没有账号? </span>
+            <a href="register.html" class="text-sm text-gray-800 font-medium">立即注册</a>
+        </div>
+    </div>
+    
+    <!-- 底部版本信息 -->
+    <div class="auth-footer">
+        版本 2.0.0 © 2023 堆场验箱系统
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 密码显示切换
+            const togglePassword = document.querySelector('.toggle-password');
+            const passwordInput = document.querySelector('input[type="password"]');
+            
+            if(togglePassword && passwordInput) {
+                togglePassword.addEventListener('click', function() {
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
+                    this.classList.toggle('fa-eye');
+                    this.classList.toggle('fa-eye-slash');
+                });
+            }
+            
+            // 登录按钮点击
+            const loginButton = document.querySelector('.login-button');
+            if(loginButton) {
+                loginButton.addEventListener('click', function() {
+                    // 这里可以添加登录逻辑
+                    window.location.href = 'home.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

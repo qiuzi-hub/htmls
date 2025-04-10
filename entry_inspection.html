@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>进场检验 - 堆场验箱系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/mobile-app-style.css">
+    <style>
+        body {
+            max-width: 430px;
+            min-height: 1020px;
+            height: 1020px;
+            margin: 0 auto;
+            position: relative;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            overflow-y: auto;
+        }
+        
+        .app-bottom-nav {
+            max-width: 430px;
+            margin: 0 auto;
+        }
+        
+        /* 保留现有样式 */
+    </style>
+</head>
+<body class="bg-gray-100 h-screen flex flex-col">
+    <!-- 顶部状态栏 -->
+    <div class="bg-white px-4 py-2 flex justify-between items-center">
+        <div class="text-sm text-gray-600">9:41</div>
+        <div class="flex space-x-2">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+    
+    <!-- 头部 -->
+    <div class="bg-white p-4 shadow-sm flex items-center">
+        <a href="home.html" class="mr-4">
+            <i class="fas fa-arrow-left text-gray-600"></i>
+        </a>
+        <h1 class="text-lg font-bold text-gray-800">进场检验</h1>
+    </div>
+    
+    <!-- 集装箱信息扫描 -->
+    <div class="p-3 overflow-auto pb-28">
+        <div class="bg-white rounded-lg p-4 shadow-sm mb-3">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-base font-medium text-gray-800">集装箱信息</h2>
+                <button class="bg-gray-600 text-white px-3 py-1 rounded text-xs flex items-center">
+                    <i class="fas fa-qrcode mr-1"></i> 扫描
+                </button>
+            </div>
+            
+            <div class="space-y-3">
+                <div class="flex items-center border-b border-gray-100 pb-2">
+                    <div class="w-20 text-sm text-gray-500">箱号</div>
+                    <input type="text" placeholder="输入箱号(如MSCU-123456-7)" class="flex-1 outline-none text-sm text-gray-700">
+                </div>
+                
+                <div class="flex items-center border-b border-gray-100 pb-2">
+                    <div class="w-20 text-sm text-gray-500">车牌号</div>
+                    <input type="text" placeholder="输入车牌号(如沪A12345)" class="flex-1 outline-none text-sm text-gray-700">
+                </div>
+                
+                <!-- 重量 - 选择式显示，更大的按钮 -->
+                <div class="flex items-center border-b border-gray-100 pb-2">
+                    <div class="w-20 text-sm text-gray-500">重量</div>
+                    <div class="flex-1 flex space-x-4">
+                        <div class="px-2 py-3 rounded border border-gray-150 cursor-pointer weight-option flex-1 text-center" data-weight="30480">
+                            <span class="text-sm text-gray-700">30480KG</span>
+                        </div>
+                        <div class="px-2 py-3 rounded border border-gray-150 cursor-pointer weight-option flex-1 text-center" data-weight="32500">
+                            <span class="text-sm text-gray-700">32500KG</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 箱型分类 -->
+                <div class="border-b border-gray-100 pb-2">
+                    <div class="w-full text-sm text-gray-500 mb-2 font-bold">箱型分类</div>
+                    
+                    <!-- 一级分类 -->
+                    <div class="flex items-center mb-2">
+                        <div class="w-20 text-sm text-gray-500">基本类型</div>
+                        <select class="flex-1 outline-none text-sm text-gray-700 bg-transparent" id="container-type-level1">
+                            <option value="normal">普通箱</option>
+                            <option value="special">特种箱</option>
+                        </select>
+                    </div>
+                    
+                    <!-- 二级分类 -->
+                    <div class="flex items-center mb-2">
+                        <div class="w-20 text-sm text-gray-500">尺寸规格</div>
+                        <select class="flex-1 outline-none text-sm text-gray-700 bg-transparent" id="container-type-level2">
+                            <option value="20">20尺</option>
+                            <option value="40">40尺</option>
+                            <option value="45">45尺</option>
+                        </select>
+                    </div>
+                    
+                    <!-- 三级分类 -->
+                    <div class="flex items-center">
+                        <div class="w-20 text-sm text-gray-500">功能属性</div>
+                        <select class="flex-1 outline-none text-sm text-gray-700 bg-transparent" id="container-type-level3">
+                            <option value="standard">标准</option>
+                            <option value="high">高柜</option>
+                            <option value="reefer">冷藏柜</option>
+                            <option value="open-top">开顶柜</option>
+                            <option value="flat-rack">框架柜</option>
+                            <option value="tank">罐式柜</option>
+                    </select>
+                    </div>
+                </div>
+                
+                <!-- 级别 - 使用点击选择而非下拉列表 -->
+                <div class="flex items-center border-b border-gray-100 pb-2">
+                    <div class="w-20 text-sm text-gray-500">级别</div>
+                    <div class="flex-1 flex space-x-6">
+                        <div class="flex items-center">
+                            <input type="radio" id="grade-g" name="grade" value="G" class="mr-1" checked>
+                            <label for="grade-g" class="text-sm text-gray-700">G</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="radio" id="grade-m" name="grade" value="M" class="mr-1">
+                            <label for="grade-m" class="text-sm text-gray-700">M</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="radio" id="grade-b" name="grade" value="B" class="mr-1">
+                            <label for="grade-b" class="text-sm text-gray-700">B</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 箱属 - 单独一行 -->
+                <div class="flex items-center border-b border-gray-100 pb-2">
+                    <div class="w-20 text-sm text-gray-500">箱属</div>
+                    <a href="container_owner_select.html" class="flex-1 flex items-center justify-between">
+                        <span class="text-sm text-gray-700" id="selected-owner">选择箱属</span>
+                        <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                    </a>
+                </div>
+                
+                <div class="flex items-center border-b border-gray-100 pb-2">
+                    <div class="w-20 text-sm text-gray-500">控箱</div>
+                    <a href="container_controller_select.html" class="flex-1 flex items-center justify-between">
+                        <span class="text-sm text-gray-700" id="selected-controller">选择控箱</span>
+                        <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                    </a>
+                </div>
+                
+                <!-- 特殊箱型检验项目 -->
+                <div id="special-inspection-items" class="border-b border-gray-100 pb-2 hidden">
+                    <div class="w-full text-sm text-gray-500 mb-2">特殊检验项目</div>
+                    
+                    <!-- 冷藏箱特殊检验项 -->
+                    <div id="reefer-items" class="hidden">
+                        <div class="flex items-center mb-2">
+                            <input type="checkbox" id="reefer-check1" class="mr-2">
+                            <label for="reefer-check1" class="text-sm text-gray-700">制冷系统检验</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="reefer-check2" class="mr-2">
+                            <label for="reefer-check2" class="text-sm text-gray-700">温控系统检验</label>
+                        </div>
+                    </div>
+                    
+                    <!-- 开顶箱特殊检验项 -->
+                    <div id="open-top-items" class="hidden">
+                        <div class="flex items-center mb-2">
+                            <input type="checkbox" id="open-top-check1" class="mr-2">
+                            <label for="open-top-check1" class="text-sm text-gray-700">顶部帆布完整性</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="open-top-check2" class="mr-2">
+                            <label for="open-top-check2" class="text-sm text-gray-700">顶部支架状态</label>
+                        </div>
+                    </div>
+                    
+                    <!-- 框架箱特殊检验项 -->
+                    <div id="flat-rack-items" class="hidden">
+                        <div class="flex items-center mb-2">
+                            <input type="checkbox" id="flat-rack-check1" class="mr-2">
+                            <label for="flat-rack-check1" class="text-sm text-gray-700">端框状态</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="flat-rack-check2" class="mr-2">
+                            <label for="flat-rack-check2" class="text-sm text-gray-700">锁定装置检查</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center border-b border-gray-100 pb-2">
+                    <div class="w-20 text-sm text-gray-500">堆场位置</div>
+                    <select class="outline-none text-sm text-gray-700 bg-transparent mr-2">
+                        <option>A区</option>
+                        <option>B区</option>
+                        <option>C区</option>
+                    </select>
+                    <input type="text" placeholder="行" class="w-14 outline-none text-sm text-gray-700 text-center">
+                    <span class="mx-1">-</span>
+                    <input type="text" placeholder="列" class="w-14 outline-none text-sm text-gray-700 text-center">
+                </div>
+            </div>
+        </div>
+        
+        <!-- 柜损项目 -->
+        <div class="bg-white rounded-lg p-4 shadow-sm mb-3">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-base font-bold text-gray-800">柜损项目</h2>
+                <div class="flex space-x-2">
+                    <button class="bg-gray-600 text-white px-3 py-1.5 rounded text-xs flex items-center hover:bg-gray-700 transition-colors" id="cabinet-damage-btn">
+                        <i class="fas fa-exclamation-triangle mr-1"></i> 柜损
+                    </button>
+                    <button class="bg-gray-600 text-white px-3 py-1.5 rounded text-xs flex items-center hover:bg-gray-700 transition-colors" id="quick-entry-btn">
+                        <i class="fas fa-bolt mr-1"></i> 快捷录入
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 柜损记录列表 -->
+            <div class="mb-3">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-medium text-gray-700">已添加柜损</h3>
+                    <button id="add-damage-btn" class="bg-gray-600 text-white px-2 py-1 rounded text-xs flex items-center">
+                        <i class="fas fa-plus mr-1"></i> 添加柜损
+                    </button>
+                </div>
+                
+                <!-- 柜损记录卡片列表 -->
+                <div class="space-y-3" id="damage-cards-container">
+                    <!-- 柜损记录卡片1 -->
+                    <div class="bg-white rounded-lg border border-gray-200 overflow-hidden damage-card" data-id="1">
+                        <div class="bg-gray-50 px-3 py-2 border-b border-gray-200 flex justify-between items-center">
+                            <div class="flex items-center">
+                                <span class="font-medium text-gray-800">左门</span>
+                                <span class="ml-2 px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs">凹陷</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button class="text-blue-500 hover:text-blue-600 edit-damage-btn" data-id="1">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="text-red-500 hover:text-red-600 delete-damage-btn" data-id="1">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="px-3 py-2">
+                            <div class="grid grid-cols-2 gap-y-2 text-sm">
+                                <div>
+                                    <span class="text-gray-500">位置：</span>
+                                    <span class="text-gray-700">左门前部</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-500">维修方式：</span>
+                                    <span class="text-gray-700">修复</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-500">新旧口：</span>
+                                    <span class="text-gray-700">新</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-500">数量：</span>
+                                    <span class="text-gray-700">1</span>
+                                </div>
+                                <div class="col-span-2">
+                                    <span class="text-gray-500">尺寸：</span>
+                                    <span class="text-gray-700">20×15 cm</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 空状态提示 -->
+                <div id="empty-state" class="hidden bg-gray-50 rounded-lg border border-gray-200 p-6 text-center">
+                    <div class="text-gray-400 mb-2">
+                        <i class="fas fa-clipboard-list text-3xl"></i>
+                    </div>
+                    <p class="text-sm text-gray-500 mb-3">暂无柜损记录</p>
+                    <button id="empty-add-btn" class="bg-gray-600 text-white px-3 py-1.5 rounded text-xs inline-flex items-center">
+                        <i class="fas fa-plus mr-1"></i> 添加第一项柜损
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 照片上传 -->
+        <div class="bg-white rounded-lg p-4 shadow-sm mb-3">
+            <h2 class="text-base font-medium text-gray-800 mb-3">照片上传</h2>
+            
+            <div class="grid grid-cols-3 gap-2">
+                <div class="aspect-square bg-gray-100 rounded flex items-center justify-center border border-dashed border-gray-300">
+                    <i class="fas fa-plus text-gray-400"></i>
+                </div>
+                <div class="aspect-square bg-gray-200 rounded overflow-hidden">
+                    <div class="w-full h-full flex items-center justify-center text-gray-400">
+                        <i class="fas fa-image text-xl"></i>
+                    </div>
+                </div>
+                <div class="aspect-square bg-gray-200 rounded overflow-hidden">
+                    <div class="w-full h-full flex items-center justify-center text-gray-400">
+                        <i class="fas fa-image text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex justify-center mt-3">
+                <button class="bg-gray-600 text-white px-4 py-2 rounded text-xs flex items-center">
+                    <i class="fas fa-camera mr-2"></i> 拍照上传
+                </button>
+            </div>
+            
+            <!-- 备注 -->
+            <div class="mt-4">
+                <h2 class="text-base font-medium text-gray-800 mb-2">备注</h2>
+                <textarea placeholder="输入其他需要说明的情况..." class="w-full p-2 border border-gray-200 rounded text-sm h-20"></textarea>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 底部导航和操作按钮 -->
+    <div class="fixed bottom-0 left-0 right-0">
+        <!-- 操作按钮 -->
+        <div class="bg-white border-t border-gray-200 p-3 flex space-x-2">
+            <button class="flex-1 bg-gray-200 text-gray-700 py-2 rounded font-medium text-sm">
+                待确认
+            </button>
+            <button class="flex-1 bg-gray-300 text-gray-700 py-2 rounded font-medium text-sm flex items-center justify-center">
+                <i class="fas fa-print mr-1"></i> 打印
+            </button>
+            <button class="flex-1 bg-gray-600 text-white py-2 rounded font-medium text-sm">
+                确认
+            </button>
+        </div>
+        
+        <!-- 底部导航 -->
+        <div class="bg-gray-300 border-t border-gray-400 flex justify-around py-2">
+            <a href="home.html" class="flex flex-col items-center text-gray-500">
+                <i class="fas fa-home text-xl"></i>
+                <span class="text-xs mt-0.5">首页</span>
+            </a>
+            <a href="task_list.html" class="flex flex-col items-center text-gray-800">
+                <i class="fas fa-list-alt text-xl"></i>
+                <span class="text-xs mt-0.5">任务</span>
+            </a>
+            <a href="#" class="flex flex-col items-center text-gray-500">
+                <i class="fas fa-chart-bar text-xl"></i>
+                <span class="text-xs mt-0.5">统计</span>
+            </a>
+            <a href="settings.html" class="flex flex-col items-center text-gray-500">
+                <i class="fas fa-user text-xl"></i>
+                <span class="text-xs mt-0.5">我的</span>
+            </a>
+        </div>
+    </div>
+    
+    <!-- 快捷录入弹窗 -->
+    <div id="quick-entry-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-[100]">
+        <div class="bg-white rounded-lg w-11/12 max-h-[80vh] overflow-auto">
+            <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                <h3 class="font-medium">快捷柜损选择</h3>
+                <button id="close-quick-entry" class="text-gray-500">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-4">
+                <!-- 分类标签 -->
+                <div class="mb-4 flex overflow-x-auto pb-2">
+                    <button class="quick-category-btn bg-gray-600 text-white px-3 py-1 rounded-full text-xs whitespace-nowrap mr-2" data-category="wash">清洗类</button>
+                    <button class="quick-category-btn bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-xs whitespace-nowrap mr-2" data-category="door">门类</button>
+                    <button class="quick-category-btn bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-xs whitespace-nowrap mr-2" data-category="scrape">铲削类</button>
+                    <button class="quick-category-btn bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-xs whitespace-nowrap mr-2" data-category="fix">修复类</button>
+                    <button class="quick-category-btn bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-xs whitespace-nowrap mr-2" data-category="other">其他</button>
+                </div>
+                
+                <!-- 清洗类 -->
+                <div class="quick-entry-category" data-category="wash">
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer quick-entry-option" data-type="40-chemical">
+                            40'化洗
+                        </div>
+                        <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer quick-entry-option" data-type="20-chemical">
+                            20'化洗
+                        </div>
+                        <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer quick-entry-option" data-type="40-floor-wash">
+                            40'地板水洗
+                        </div>
+                        <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer quick-entry-option" data-type="20-floor-wash">
+                            20'地板水洗
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 铲削类 -->
+                <div class="quick-entry-category hidden" data-category="scrape">
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer quick-entry-option" data-type="inner-scrape">
+                            内铲
+                        </div>
+                        <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer quick-entry-option" data-type="outer-scrape">
+                            外铲
+                        </div>
+                        <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer quick-entry-option" data-type="floor-outer-scrape">
+                            地板外铲
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 修复类 -->
+                <div class="quick-entry-category hidden" data-category="fix">
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer quick-entry-option" data-type="inner-side-paint">
+                            内旁补漆
+                        </div>
+                        <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer quick-entry-option" data-type="inner-side-polish">
+                            内旁打磨
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 门类 -->
+                <div class="quick-entry-category hidden" data-category="door">
+                    <!-- 门类分页 -->
+                    <div class="flex justify-between mb-2">
+                        <div class="text-xs text-gray-500">共14项</div>
+                        <div class="flex space-x-1">
+                            <button class="door-page-btn bg-gray-600 text-white w-5 h-5 rounded text-xs flex items-center justify-center" data-page="1">1</button>
+                            <button class="door-page-btn bg-gray-200 text-gray-700 w-5 h-5 rounded text-xs flex items-center justify-center" data-page="2">2</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 门类-第1页 -->
+                    <div class="door-page" data-page="1">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer quick-entry-option" data-type="left-door-seal">
+                                左门胶补胶
+                            </div>
+                            <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer quick-entry-option" data-type="right-door-seal">
+                                右门胶补胶
+                            </div>
+                            <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer quick-entry-option" data-type="door-bottom-beam-90">
+                                门下梁打正90
+                            </div>
+                            <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer quick-entry-option" data-type="door-bottom-beam-120">
+                                门下梁打正120
+                            </div>
+                            <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer quick-entry-option" data-type="door-top-beam-90">
+                                门上梁打正90
+                            </div>
+                            <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer quick-entry-option" data-type="door-top-beam-120">
+                                门上梁打正120
+                            </div>
+                            <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer quick-entry-option" data-type="left-door-frame-90">
+                                左门框打正90
+                            </div>
+                            <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer quick-entry-option" data-type="left-door-frame-120">
+                                左门框打正120
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 门类-第2页 -->
+                    <div class="door-page hidden" data-page="2">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer quick-entry-option" data-type="left-door-strip-30">
+                                左门压条割30
+                            </div>
+                            <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer quick-entry-option" data-type="right-door-strip-30">
+                                右门压条割30
+                            </div>
+                            <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer quick-entry-option" data-type="left-door-bar-fix">
+                                左门巴打正
+                            </div>
+                            <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer quick-entry-option" data-type="right-door-bar-fix">
+                                右门巴打正
+                            </div>
+                            <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer quick-entry-option" data-type="left-door-corner-90">
+                                左门角柱打正90
+                            </div>
+                            <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer quick-entry-option" data-type="right-door-corner-90">
+                                右门角柱打正90
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 其他 -->
+                <div class="quick-entry-category hidden" data-category="other">
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer quick-entry-option" data-type="oocl-small-electronic">
+                            OOCL小柜电子柜
+                        </div>
+                        <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer quick-entry-option" data-type="oocl-large-electronic">
+                            OOCL大柜电子柜
+                        </div>
+                        <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer quick-entry-option" data-type="container-check">
+                            箱体检查
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 快速录入说明 -->
+                <div class="mt-4 pt-3 border-t border-gray-100">
+                    <div class="text-xs text-gray-500">
+                        <p>点击相应选项可快速添加常用柜损项目</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 快捷录入按钮点击事件
+        document.getElementById('quick-entry-btn').addEventListener('click', function() {
+            document.getElementById('quick-entry-modal').classList.remove('hidden');
+        });
+        
+        // 关闭按钮点击事件
+        document.getElementById('close-quick-entry').addEventListener('click', function() {
+            document.getElementById('quick-entry-modal').classList.add('hidden');
+        });
+    </script>
+    
+    <!-- 柜损类型弹窗 -->
+    <div id="cabinet-damage-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg w-11/12 overflow-hidden">
+            <div class="p-3 border-b border-gray-200 flex justify-between items-center">
+                <h3 class="font-medium">选择柜损类型</h3>
+                <button id="close-cabinet-damage" class="text-gray-500">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-4 grid grid-cols-2 gap-3">
+                <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer cabinet-damage-option" data-type="door-panel">
+                    门板
+                </div>
+                <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer cabinet-damage-option" data-type="floor">
+                    地板类
+                </div>
+                <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer cabinet-damage-option" data-type="side-panel">
+                    侧板类
+                </div>
+                <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer cabinet-damage-option" data-type="label-class">
+                    标识牌类
+                </div>
+                <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer cabinet-damage-option" data-type="corner">
+                    角件类
+                </div>
+                <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer cabinet-damage-option" data-type="door-parts">
+                    门部件
+                </div>
+                <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer cabinet-damage-option" data-type="bottom">
+                    底部
+                </div>
+                <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer cabinet-damage-option" data-type="top">
+                    顶部
+                </div>
+                <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer cabinet-damage-option" data-type="freezer">
+                    冻柜类
+                </div>
+                <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer cabinet-damage-option" data-type="open-top">
+                    开顶柜类
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 门板详细类型选择弹窗 -->
+    <div id="door-panel-detail-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg w-11/12 max-h-[70vh] overflow-auto">
+            <div class="p-3 border-b border-gray-200 flex justify-between items-center sticky top-0 bg-white z-10">
+                <div class="flex items-center">
+                    <button id="back-to-cabinet-damage" class="text-gray-500 mr-2">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h3 class="font-medium">门板损坏详情</h3>
+                </div>
+                <button id="close-door-panel-detail" class="text-gray-500">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-3">
+                <div class="grid grid-cols-1 gap-2">
+                    <!-- 这里的内容会被door_panel_detail_update.js脚本动态替换 -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+  
+    
+    <!-- 侧板详细类型选择弹窗 -->
+    <div id="side-panel-detail-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg w-11/12 max-h-[70vh] overflow-auto">
+            <div class="p-3 border-b border-gray-200 flex justify-between items-center sticky top-0 bg-white z-10">
+                <div class="flex items-center">
+                    <button id="back-to-cabinet-damage" class="text-gray-500 mr-2">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h3 class="font-medium">侧板损坏详情</h3>
+                </div>
+                <button id="close-side-panel-detail" class="text-gray-500">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-3">
+                <div class="grid grid-cols-1 gap-2">
+                    <div class="mb-2">
+                        <h4 class="text-sm font-medium text-gray-700 p-1 bg-gray-50 rounded">内旁</h4>
+                        <div class="grid grid-cols-3 gap-1 mt-1">
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="内旁" data-damage="破烂">破烂</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="内旁" data-damage="裂缝">裂缝</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="内旁" data-damage="霉烂">霉烂</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="内旁" data-damage="肮脏">肮脏</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="内旁" data-damage="变形">变形</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="内旁" data-damage="客户标签">客户标签</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-2">
+                        <h4 class="text-sm font-medium text-gray-700 p-1 bg-gray-50 rounded">外旁</h4>
+                        <div class="grid grid-cols-3 gap-1 mt-1">
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="外旁" data-damage="破烂">破烂</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="外旁" data-damage="裂缝">裂缝</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="外旁" data-damage="霉烂">霉烂</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="外旁" data-damage="变形">变形</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="外旁" data-damage="客户标签">客户标签</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-2">
+                        <h4 class="text-sm font-medium text-gray-700 p-1 bg-gray-50 rounded">左旁/右旁</h4>
+                        <div class="grid grid-cols-3 gap-1 mt-1">
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="左旁" data-damage="破烂">左旁-破烂</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="左旁" data-damage="裂缝">左旁-裂缝</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="左旁" data-damage="霉烂">左旁-霉烂</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="右旁" data-damage="破烂">右旁-破烂</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="右旁" data-damage="裂缝">右旁-裂缝</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="右旁" data-damage="变形">右旁-变形</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-2">
+                        <h4 class="text-sm font-medium text-gray-700 p-1 bg-gray-50 rounded">前旁</h4>
+                        <div class="grid grid-cols-3 gap-1 mt-1">
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="前旁" data-damage="破烂">破烂</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="前旁" data-damage="裂缝">裂缝</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="前旁" data-damage="霉烂">霉烂</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="前旁" data-damage="凹损">凹损</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="前旁" data-damage="变形">变形</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-2">
+                        <h4 class="text-sm font-medium text-gray-700 p-1 bg-gray-50 rounded">气窗/固货相关</h4>
+                        <div class="grid grid-cols-3 gap-1 mt-1">
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="左气窗" data-damage="破烂">左气窗-破烂</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="右气窗" data-damage="破烂">右气窗-破烂</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="固货窗" data-damage="破烂">固货窗-破烂</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="固货环" data-damage="破烂">固货环-破烂</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="固货环" data-damage="丢失">固货环-丢失</div>
+            </div>
+        </div>
+        
+                    <div class="mb-2">
+                        <h4 class="text-sm font-medium text-gray-700 p-1 bg-gray-50 rounded">侧板</h4>
+                        <div class="grid grid-cols-3 gap-1 mt-1">
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="侧板" data-damage="破烂">破烂</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="侧板" data-damage="裂缝">裂缝</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="侧板" data-damage="霉烂">霉烂</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer side-panel-detail-option" data-part="侧板" data-damage="变形">变形</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        
+    <!-- 地板类详细类型选择弹窗 -->
+    <div id="floor-class-detail-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg w-11/12 max-h-[70vh] overflow-auto">
+            <div class="p-3 border-b border-gray-200 flex justify-between items-center sticky top-0 bg-white z-10">
+                <div class="flex items-center">
+                    <button id="back-to-cabinet-damage" class="text-gray-500 mr-2">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h3 class="font-medium">地板损坏详情</h3>
+                </div>
+                <button id="close-floor-class-detail" class="text-gray-500">
+                    <i class="fas fa-times"></i>
+        </button>
+            </div>
+            <div class="p-3">
+                <div class="grid grid-cols-1 gap-2">
+                    <div class="mb-2">
+                        <h4 class="text-sm font-medium text-gray-700 p-1 bg-gray-50 rounded">地板</h4>
+                        <div class="grid grid-cols-3 gap-1 mt-1">
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer floor-class-detail-option" data-part="地板" data-damage="破烂">破烂</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer floor-class-detail-option" data-part="地板" data-damage="污染">污染</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer floor-class-detail-option" data-part="地板" data-damage="肮脏">肮脏</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer floor-class-detail-option" data-part="地板" data-damage="分层">分层</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer floor-class-detail-option" data-part="地板" data-damage="客户标签">客户标签</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer floor-class-detail-option" data-part="地板" data-damage="臭味/气味">臭味</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer floor-class-detail-option" data-part="地板" data-damage="油污">油污</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-2">
+                        <h4 class="text-sm font-medium text-gray-700 p-1 bg-gray-50 rounded">竹木复合地板</h4>
+                        <div class="grid grid-cols-3 gap-1 mt-1">
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer floor-class-detail-option" data-part="竹木复合地板" data-damage="破烂">破烂</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer floor-class-detail-option" data-part="竹木复合地板" data-damage="污染">污染</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer floor-class-detail-option" data-part="竹木复合地板" data-damage="分层">分层</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-2">
+                        <h4 class="text-sm font-medium text-gray-700 p-1 bg-gray-50 rounded">胶合地板</h4>
+                        <div class="grid grid-cols-3 gap-1 mt-1">
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer floor-class-detail-option" data-part="胶合地板" data-damage="破烂">破烂</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer floor-class-detail-option" data-part="胶合地板" data-damage="污染">污染</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer floor-class-detail-option" data-part="胶合地板" data-damage="分层">分层</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-2">
+                        <h4 class="text-sm font-medium text-gray-700 p-1 bg-gray-50 rounded">挡水欄/门槛板</h4>
+                        <div class="grid grid-cols-3 gap-1 mt-1">
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer floor-class-detail-option" data-part="挡水欄" data-damage="破损">挡水欄破损</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer floor-class-detail-option" data-part="挡水欄" data-damage="变形">挡水欄变形</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer floor-class-detail-option" data-part="门槛板" data-damage="破损">门槛板破损</div>
+                            <div class="p-1 border border-gray-200 rounded text-center text-xs cursor-pointer floor-class-detail-option" data-part="门槛板" data-damage="变形">门槛板变形</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 底部详细类型选择弹窗 -->
+    <div id="bottom-detail-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg w-11/12 max-h-[70vh] overflow-auto">
+            <div class="p-3 border-b border-gray-200 flex justify-between items-center sticky top-0 bg-white z-10">
+                <div class="flex items-center">
+                    <button id="back-to-cabinet-damage-from-bottom" class="text-gray-500 mr-2">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h3 class="font-medium">底部损坏详情</h3>
+                </div>
+                <button id="close-bottom-detail" class="text-gray-500">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+         
+        </div>
+    </div>
+
+    <!-- 顶部详细类型选择弹窗 -->
+    <div id="top-detail-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg w-11/12 max-h-[70vh] overflow-auto">
+            <div class="p-3 border-b border-gray-200 flex justify-between items-center sticky top-0 bg-white z-10">
+                <div class="flex items-center">
+                    <button id="back-to-cabinet-damage-from-top" class="text-gray-500 mr-2">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h3 class="font-medium">顶部损坏详情</h3>
+                </div>
+                <button id="close-top-detail" class="text-gray-500">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+           
+        </div>
+    </div>
+
+    <!-- 标识牌类详细选择弹窗 -->
+    <div id="identification-plates-detail-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg w-11/12 max-h-[80vh] overflow-auto">
+            <div class="p-3 border-b border-gray-200 flex justify-between items-center">
+                <div class="flex items-center">
+                    <button id="back-to-cabinet-damage" class="mr-3">
+                        <i class="fas fa-arrow-left text-gray-600"></i>
+                    </button>
+                    <h3 class="font-medium">标识牌类选择</h3>
+                </div>
+                <button id="close-identification-plates-detail" class="text-gray-500">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-3">
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer detail-option" data-part="整套重量标">
+                        整套重量标
+                    </div>
+                    <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer detail-option" data-part="重量标">
+                        重量标
+                    </div>
+                    <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer detail-option" data-part="单个或几个箱号">
+                        单个或几个箱号
+                    </div>
+                    <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer detail-option" data-part="箱主代码">
+                        箱主代码
+                    </div>
+                    <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer detail-option" data-part="高标">
+                        高标
+                    </div>
+                    <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer detail-option" data-part="大字标">
+                        大字标
+                    </div>
+                    <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer detail-option" data-part="箱号">
+                        箱号
+                    </div>
+                    <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer detail-option" data-part="铁路标">
+                        铁路标
+                    </div>
+                    <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer detail-option" data-part="客户标签">
+                        客户标签
+                    </div>
+                    <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer detail-option" data-part="CSC牌">
+                        CSC牌
+                    </div>
+                    <div class="p-2 border border-gray-200 rounded text-center text-sm cursor-pointer detail-option" data-part="斑马条">
+                        斑马条
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 从localStorage加载柜损记录
+            function loadDamageRecords() {
+                const damageRecords = JSON.parse(localStorage.getItem('damageRecords') || '[]');
+                const cardsContainer = document.getElementById('damage-cards-container');
+                
+                if (cardsContainer) {
+                    // 清空现有卡片
+                    cardsContainer.innerHTML = '';
+                    
+                    // 添加所有记录
+                    damageRecords.forEach(record => {
+                        // 创建损坏卡片
+                        const card = createDamageCard(record);
+                        cardsContainer.appendChild(card);
+                    });
+                    
+                    // 更新空状态显示
+                    updateEmptyState();
+                    
+                    // 绑定编辑和删除按钮事件
+                    bindCardEvents();
+                }
+            }
+            
+            // 创建损坏卡片
+            function createDamageCard(record) {
+                // 提取第一个位置和维修方法作为展示（如果有）
+                const position = record.positions && record.positions.length > 0 ? record.positions[0] : '';
+                const repairMethod = record.repairMethods && record.repairMethods.length > 0 ? record.repairMethods[0] : '';
+                
+                // 尺寸显示
+                const dimensions = record.length && record.width ? 
+                    `${record.length}×${record.width} cm` : '';
+                
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-lg border border-gray-200 overflow-hidden damage-card';
+                card.setAttribute('data-id', record.id);
+                
+                card.innerHTML = `
+                    <div class="bg-gray-50 px-3 py-2 border-b border-gray-200 flex justify-between items-center">
+                        <div class="flex items-center">
+                            <span class="font-medium text-gray-800">${record.part}</span>
+                            <span class="ml-2 px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs">${record.damage}</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button class="text-blue-500 hover:text-blue-600 edit-damage-btn" data-id="${record.id}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="text-red-500 hover:text-red-600 delete-damage-btn" data-id="${record.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="px-3 py-2">
+                        <div class="grid grid-cols-2 gap-y-2 text-sm">
+                            <div>
+                                <span class="text-gray-500">位置：</span>
+                                <span class="text-gray-700">${position}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-500">维修方式：</span>
+                                <span class="text-gray-700">${repairMethod}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-500">新旧口：</span>
+                                <span class="text-gray-700">${record.newOld || ''}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-500">数量：</span>
+                                <span class="text-gray-700">${record.quantity || '1'}</span>
+                            </div>
+                            <div class="col-span-2">
+                                <span class="text-gray-500">尺寸：</span>
+                                <span class="text-gray-700">${dimensions}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                return card;
+            }
+            
+            // 删除柜损记录
+            function deleteDamageRecord(id) {
+                // 从localStorage获取记录
+                let damageRecords = JSON.parse(localStorage.getItem('damageRecords') || '[]');
+                
+                // 过滤掉要删除的记录
+                damageRecords = damageRecords.filter(record => record.id !== id);
+                
+                // 保存回localStorage
+                localStorage.setItem('damageRecords', JSON.stringify(damageRecords));
+                
+                // 移除对应的卡片
+                const card = document.querySelector(`.damage-card[data-id="${id}"]`);
+                if (card) {
+                    card.remove();
+                }
+                
+                // 更新空状态显示
+                updateEmptyState();
+                
+                // 显示删除成功提示
+                showToast('删除成功');
+            }
+            
+            // 编辑柜损记录
+            function editDamageRecord(id) {
+                // 从localStorage获取记录
+                const damageRecords = JSON.parse(localStorage.getItem('damageRecords') || '[]');
+                const record = damageRecords.find(r => r.id === id);
+                
+                if (record) {
+                    // 构建URL参数
+                    let url = `damage_detail.html?id=${encodeURIComponent(id)}`;
+                    url += `&part=${encodeURIComponent(record.part || '')}`;
+                    url += `&damage=${encodeURIComponent(record.damage || '')}`;
+                    
+                    // 如果有位置和维修方法，添加到URL
+                    if (record.positions && record.positions.length > 0) {
+                        url += `&positions=${encodeURIComponent(record.positions.join(','))}`;
+                    }
+                    
+                    if (record.repairMethods && record.repairMethods.length > 0) {
+                        url += `&repairMethods=${encodeURIComponent(record.repairMethods.join(','))}`;
+                    }
+                    
+                    // 跳转到编辑页面
+                    window.location.href = url;
+                }
+            }
+            
+            // 更新空状态显示
+            function updateEmptyState() {
+                const emptyState = document.getElementById('empty-state');
+                const cardsContainer = document.getElementById('damage-cards-container');
+                
+                if (emptyState && cardsContainer) {
+                    if (cardsContainer.children.length === 0) {
+                        emptyState.classList.remove('hidden');
+                        cardsContainer.classList.add('hidden');
+                    } else {
+                        emptyState.classList.add('hidden');
+                        cardsContainer.classList.remove('hidden');
+                    }
+                }
+            }
+            
+            // 绑定卡片的编辑和删除按钮事件
+            function bindCardEvents() {
+                document.querySelectorAll('.edit-damage-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = this.getAttribute('data-id');
+                        editDamageRecord(id);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-damage-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = this.getAttribute('data-id');
+                        deleteDamageRecord(id);
+                    });
+                });
+            }
+            
+            // 初始加载柜损记录
+            loadDamageRecords();
+            
+            // 添加柜损按钮点击事件
+            const addDamageBtn = document.getElementById('add-damage-btn');
+            const emptyAddBtn = document.getElementById('empty-add-btn');
+            
+            if (addDamageBtn) {
+                addDamageBtn.addEventListener('click', function() {
+                    // 打开柜损弹窗
+                    document.getElementById('cabinet-damage-modal').classList.remove('hidden');
+                });
+            }
+            
+            if (emptyAddBtn) {
+                emptyAddBtn.addEventListener('click', function() {
+                    // 打开柜损弹窗
+                    document.getElementById('cabinet-damage-modal').classList.remove('hidden');
+                });
+            }
+            
+            // 柜损按钮点击事件
+            document.getElementById('cabinet-damage-btn').addEventListener('click', function() {
+                document.getElementById('cabinet-damage-modal').classList.remove('hidden');
+            });
+            
+            // 快捷录入按钮点击事件
+            document.getElementById('quick-entry-btn').addEventListener('click', function() {
+                document.getElementById('quick-entry-modal').classList.remove('hidden');
+            });
+            
+            // 关闭快捷录入弹窗
+            const closeQuickEntry = document.getElementById('close-quick-entry');
+            if (closeQuickEntry) {
+                closeQuickEntry.addEventListener('click', function() {
+                    const modal = document.getElementById('quick-entry-modal');
+                    if (modal) {
+                        modal.classList.add('hidden');
+                    }
+                });
+            }
+            
+            // 重量选择逻辑
+            document.querySelectorAll('.weight-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // 移除所有选中状态
+                    document.querySelectorAll('.weight-option').forEach(opt => {
+                        opt.classList.remove('bg-gray-200');
+                    });
+                    
+                    // 添加当前选中状态
+                    this.classList.add('bg-gray-200');
+                });
+            });
+            
+            // 柜损类型选项点击
+            document.querySelectorAll('.cabinet-damage-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // 关闭柜损类型弹窗
+                    document.getElementById('cabinet-damage-modal').classList.add('hidden');
+                    
+                    // 获取类型
+                    const type = this.getAttribute('data-type');
+                    
+                    // 根据类型跳转到对应的详细页面
+                    switch(type) {
+                        case 'door-panel':
+                            window.location.href = 'door_panel_damage.html';
+                            break;
+                        case 'floor':
+                            window.location.href = 'floor_damage.html';
+                            break;
+                        case 'side-panel':
+                            window.location.href = 'side_panel_damage.html';
+                            break;
+                        case 'open-top':
+                            window.location.href = 'open_top_damage.html';
+                            break;
+                        case 'freezer':
+                            window.location.href = 'freezer_damage.html';
+                            break;
+                        case 'label-class':
+                            window.location.href = 'label_damage.html';
+                            break;
+                        case 'corner':
+                            window.location.href = 'corner_damage.html';
+                            break;
+                        case 'door-parts':
+                            window.location.href = 'door_parts_damage.html';
+                            break;
+                        case 'bottom':
+                            window.location.href = 'bottom_damage.html';
+                            break;
+                        case 'top':
+                            window.location.href = 'top_damage.html';
+                            break;
+                    }
+                });
+            });
+            
+            // 返回按钮事件处理
+            const backBtns = document.querySelectorAll('[id="back-to-cabinet-damage"]');
+            backBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 关闭所有详细弹窗
+                    document.querySelectorAll('[id$="-detail-modal"]').forEach(modal => {
+                        modal.classList.add('hidden');
+                    });
+                    // 显示柜损类型选择弹窗
+                    document.getElementById('cabinet-damage-modal').classList.remove('hidden');
+                });
+            });
+            
+            // 关闭按钮事件处理
+            const closeBtns = [
+                'close-door-panel-detail',
+                'close-freezer-cabinet-detail',
+                'close-open-top-cabinet-detail',
+                'close-side-panel-detail',
+                'close-floor-class-detail',
+                'close-bottom-detail',
+                'close-label-class-detail',
+                'close-top-detail',
+                'close-identification-plates-detail'
+            ];
+            
+            closeBtns.forEach(id => {
+                const btn = document.getElementById(id);
+                if (btn) {
+                    btn.addEventListener('click', function() {
+                        const modalId = id.replace('close-', '') + '-modal';
+                        const modal = document.getElementById(modalId);
+                        if (modal) {
+                            modal.classList.add('hidden');
+                        }
+                    });
+                }
+            });
+            
+            // 详细选项点击处理
+            const detailOptions = [
+                '.door-panel-detail-option',
+                '.freezer-cabinet-detail-option',
+                '.open-top-cabinet-detail-option',
+                '.side-panel-detail-option',
+                '.floor-class-detail-option',
+                '.bottom-detail-option',
+                '.label-class-detail-option',
+                '.top-detail-option',
+                '.identification-plates-detail-option'
+            ];
+            
+            document.querySelectorAll(detailOptions.join(',')).forEach(option => {
+                option.addEventListener('click', function() {
+                    const part = this.getAttribute('data-part');
+                    const damage = this.getAttribute('data-damage');
+                    
+                    // 关闭所有详细弹窗
+                    document.querySelectorAll('[id$="-detail-modal"]').forEach(modal => {
+                        modal.classList.add('hidden');
+                    });
+                    
+                    // 跳转到柜损详细记录页面
+                    window.location.href = `damage_detail.html?part=${encodeURIComponent(part)}&damage=${encodeURIComponent(damage)}`;
+                });
+            });
+            
+            // 快捷柜损选项点击
+            document.querySelectorAll('.quick-entry-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // 关闭快捷录入弹窗
+                    document.getElementById('quick-entry-modal').classList.add('hidden');
+                    
+                    // 获取类型
+                    const type = this.getAttribute('data-type');
+                    const text = this.textContent.trim();
+                    
+                    // 根据快捷录入选项类型，设置不同的损坏信息参数
+                    let part = "";
+                    let damage = "破烂";
+                    
+                    switch(type) {
+                        case '40-chemical':
+                            part = "40'集装箱";
+                            damage = "化学污染";
+                            break;
+                        case '20-chemical':
+                            part = "20'集装箱";
+                            damage = "化学污染";
+                            break;
+                        case '40-floor-wash':
+                            part = "40'地板";
+                            damage = "肮脏";
+                            break;
+                        case '20-floor-wash':
+                            part = "20'地板";
+                            damage = "肮脏";
+                            break;
+                        case 'inner-scrape':
+                            part = "内壁";
+                            damage = "污损";
+                            break;
+                        case 'outer-scrape':
+                            part = "外壁";
+                            damage = "污损";
+                            break;
+                        case 'floor-outer-scrape':
+                            part = "地板";
+                            damage = "外层污损";
+                            break;
+                        case 'inner-side-paint':
+                            part = "内旁";
+                            damage = "漆面剥落";
+                            break;
+                        case 'inner-side-polish':
+                            part = "内旁";
+                            damage = "表面粗糙";
+                            break;
+                        default:
+                            // 对于门类和其他未明确定义的项目，直接使用显示文本作为部件
+                            part = text;
+                            break;
+                    }
+                    
+                    // 跳转到柜损详细记录页面
+                    window.location.href = `damage_detail.html?part=${encodeURIComponent(part)}&damage=${encodeURIComponent(damage)}&entry_type=quick`;
+                });
+            });
+            
+            // 显示提示消息
+            function showToast(message) {
+                const toast = document.createElement('div');
+                toast.className = 'fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-lg text-sm z-50';
+                toast.textContent = message;
+                
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.classList.add('opacity-0');
+                    toast.style.transition = 'opacity 0.5s';
+                    setTimeout(() => {
+                        document.body.removeChild(toast);
+                    }, 500);
+                }, 2000);
+            }
+            
+            // 页面加载后检查URL参数
+            document.addEventListener('DOMContentLoaded', function() {
+                checkForDamageParams();
+            });
+            
+            // 简单的交互逻辑，在实际应用中应该更完善
+            const containerTypeLevel3 = document.getElementById('container-type-level3');
+            if (containerTypeLevel3) {
+                containerTypeLevel3.addEventListener('change', function() {
+                    // 隐藏所有特殊检验项
+                    const reeferItems = document.getElementById('reefer-items');
+                    const openTopItems = document.getElementById('open-top-items');
+                    const flatRackItems = document.getElementById('flat-rack-items');
+                    const specialInspectionItems = document.getElementById('special-inspection-items');
+                    
+                    if (reeferItems) reeferItems.classList.add('hidden');
+                    if (openTopItems) openTopItems.classList.add('hidden');
+                    if (flatRackItems) flatRackItems.classList.add('hidden');
+                    
+                    // 根据选择显示对应的特殊检验项
+                    if (this.value === 'reefer') {
+                        if (specialInspectionItems) specialInspectionItems.classList.remove('hidden');
+                        if (reeferItems) reeferItems.classList.remove('hidden');
+                    } else if (this.value === 'open-top') {
+                        if (specialInspectionItems) specialInspectionItems.classList.remove('hidden');
+                        if (openTopItems) openTopItems.classList.remove('hidden');
+                    } else if (this.value === 'flat-rack') {
+                        if (specialInspectionItems) specialInspectionItems.classList.remove('hidden');
+                        if (flatRackItems) flatRackItems.classList.remove('hidden');
+                    } else {
+                        if (specialInspectionItems) specialInspectionItems.classList.add('hidden');
+                    }
+                });
+            }
+            
+            // 快捷录入分类切换逻辑
+            document.querySelectorAll('.quick-category-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 更新按钮样式
+                    document.querySelectorAll('.quick-category-btn').forEach(b => {
+                        b.classList.remove('bg-gray-600', 'text-white');
+                        b.classList.add('bg-gray-200', 'text-gray-700');
+                    });
+                    this.classList.remove('bg-gray-200', 'text-gray-700');
+                    this.classList.add('bg-gray-600', 'text-white');
+                    
+                    const category = this.getAttribute('data-category');
+                    
+                    // 显示/隐藏对应分类
+                    document.querySelectorAll('.quick-entry-category').forEach(cat => {
+                        if (cat.getAttribute('data-category') === category) {
+                            cat.classList.remove('hidden');
+                        } else {
+                            cat.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+            
+            // 门类分页逻辑
+            document.querySelectorAll('.door-page-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 更新按钮样式
+                    document.querySelectorAll('.door-page-btn').forEach(b => {
+                        b.classList.remove('bg-gray-600', 'text-white');
+                        b.classList.add('bg-gray-200', 'text-gray-700');
+                    });
+                    this.classList.remove('bg-gray-200', 'text-gray-700');
+                    this.classList.add('bg-gray-600', 'text-white');
+                    
+                    const page = this.getAttribute('data-page');
+                    
+                    // 显示/隐藏对应页面
+                    document.querySelectorAll('.door-page').forEach(p => {
+                        if (p.getAttribute('data-page') === page) {
+                            p.classList.remove('hidden');
+                        } else {
+                            p.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+    
+            // 初始化页面
+            const washCategoryBtn = document.querySelector('.quick-category-btn[data-category="wash"]');
+            if (washCategoryBtn) {
+                washCategoryBtn.click();
+            }
+    
+            // 底部详情选项点击
+            document.querySelectorAll('.bottom-detail-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const part = this.getAttribute('data-part');
+                    const damage = this.getAttribute('data-damage');
+                    window.location.href = `damage_detail.html?part=${encodeURIComponent(part)}&damage=${encodeURIComponent(damage)}`;
+                });
+            });
+    
+            // 顶部详情选项点击
+            document.querySelectorAll('.top-detail-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const part = this.getAttribute('data-part');
+                    const damage = this.getAttribute('data-damage');
+                    window.location.href = `damage_detail.html?part=${encodeURIComponent(part)}&damage=${encodeURIComponent(damage)}`;
+                });
+            });
+    
+            // 底部详情返回按钮
+            const backToBottomBtn = document.getElementById('back-to-cabinet-damage-from-bottom');
+            if (backToBottomBtn) {
+                backToBottomBtn.addEventListener('click', function() {
+                    document.getElementById('bottom-detail-modal').classList.add('hidden');
+                    document.getElementById('cabinet-damage-modal').classList.remove('hidden');
+                });
+            }
+    
+            // 底部详情关闭按钮
+            const closeBottomBtn = document.getElementById('close-bottom-detail');
+            if (closeBottomBtn) {
+                closeBottomBtn.addEventListener('click', function() {
+                    document.getElementById('bottom-detail-modal').classList.add('hidden');
+                });
+            }
+    
+            // 顶部详情返回按钮
+            const backToTopBtn = document.getElementById('back-to-cabinet-damage-from-top');
+            if (backToTopBtn) {
+                backToTopBtn.addEventListener('click', function() {
+                    document.getElementById('top-detail-modal').classList.add('hidden');
+                    document.getElementById('cabinet-damage-modal').classList.remove('hidden');
+                });
+            }
+        });
+    </script>
+    
+    <!-- 门板详细类型选择弹窗更新脚本 -->
+    <script src="door_panel_detail_update.js"></script>
+    
+    <!-- 顶部详细类型选择弹窗更新脚本 -->
+    <script src="top_detail_update.js"></script>
+    
+    <!-- 底部详细类型选择弹窗更新脚本 -->
+    <script src="bottom_detail_update.js"></script>
+</body>
+</html> 
